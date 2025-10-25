@@ -27,6 +27,8 @@ public partial class LAWgrid : UserControl
         private int _gridTitleHeight = 10;
         private int _theLineLabelSize = 10;
         private int _theDataLabelSize = 10;
+        private int _cellPaddingWidth = 10;
+        private int _cellPaddingHeight = 10;
         private IBrush _gridBackground = Brushes.Cornsilk;
         private IBrush _gridCellOutline = Brushes.Black;
         private IBrush _gridCellContentBrush = Brushes.Black;
@@ -198,6 +200,27 @@ public partial class LAWgrid : UserControl
             set
             {
                 _gridTitleHeight = value;
+                ReRender();
+            }
+        }
+
+        [DefaultValue(10)]
+        public int CellPaddingWidth
+        {
+            get { return _cellPaddingWidth; }
+            set
+            {
+                _cellPaddingWidth = value;
+                ReRender();
+            }
+        }
+        [DefaultValue(10)]
+        public int CellPaddingHeight
+        {
+            get { return _cellPaddingHeight; }
+            set
+            {
+                _cellPaddingHeight = value;
                 ReRender();
             }
         }
@@ -639,7 +662,7 @@ public partial class LAWgrid : UserControl
                                                            GridHeaderFontSize,
                                                            GridTitleBrush);
 
-                            _colWidths[idx] = (int)formattedText.Width + 10;
+                            _colWidths[idx] = (int)formattedText.Width + _cellPaddingWidth;
 
                             idx++;
                         }
@@ -681,14 +704,14 @@ public partial class LAWgrid : UserControl
                                                 CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                                 _gridTypeface, _gridFontSize,
                                                 _gridCellBrush);
-                                    if (_colWidths[idx] < formattedText.Width + 10)
+                                    if (_colWidths[idx] < formattedText.Width + _cellPaddingHeight)
                                     {
-                                        _colWidths[idx] = (int)formattedText.Width + 10;
+                                        _colWidths[idx] = (int)formattedText.Width + _cellPaddingWidth;
                                     }
 
-                                    if ((int)formattedText.Height + 2 > tempval)
+                                    if ((int)formattedText.Height + _cellPaddingHeight > tempval)
                                     {
-                                        tempval = (int)formattedText.Height + 2;
+                                        tempval = (int)formattedText.Height + _cellPaddingHeight;
                                     }
 
                                     idx++;
@@ -1564,7 +1587,7 @@ public partial class LAWgrid : UserControl
 
                 double delta = (maxposition / 100) * e.NewValue;
 
-                _gridXShift = (int)delta;
+                _gridXShift = (int)delta - 10;
 
                 ReRender();
             }

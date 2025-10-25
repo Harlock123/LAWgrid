@@ -7,7 +7,7 @@
     <StackPanel>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="12"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -16,7 +16,7 @@
             </Grid.ColumnDefinitions>
             <Canvas Name="TheCanvas" 
                     Background="Cornsilk" 
-                    Width="800" Height="300"
+                    Width="800" Height="350"
                     Grid.Row="0"
                     Grid.Column="0"
                     ClipToBounds="true">
