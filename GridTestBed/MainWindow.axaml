@@ -5,6 +5,7 @@
         xmlns:lawgrid="clr-namespace:LAWgrid;assembly=LAWgrid"
 
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Width="800" Height="500"
         x:Class="GridTestBed.MainWindow"
         Title="GridTestBed">
     <Grid>
@@ -12,10 +13,13 @@
             <RowDefinition Height="8*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         
         <!-- LAWGrid in top 80% -->
-        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1">
-            <lawgrid:LAWgrid GridHeight="100"/>
+        <Border Grid.Row="0" Grid.Column="0" BorderBrush="Gray" BorderThickness="1">
+            <lawgrid:LAWgrid Width="800" x:Name="TheGridInTest"/>
         </Border>
         
         <!-- Button panel in bottom 20% -->
