@@ -35,9 +35,9 @@
             </Grid.ColumnDefinitions>
             
             <!-- First row of buttons -->
-            <Button Grid.Row="0" Grid.Column="0" Content="Button 1" Margin="5"/>
-            <Button Grid.Row="0" Grid.Column="1" Content="Button 2" Margin="5"/>
-            <Button Grid.Row="0" Grid.Column="2" Content="Button 3" Margin="5"/>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="cmdTest1" Content="Database Populate Test" Margin="5"/>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="cmdTest2" Content="Button 2" Margin="5"/>
+            <Button Grid.Row="0" Grid.Column="2" x:Name="cmdTest3" Content="Button 3" Margin="5"/>
             
             <!-- Second row of buttons -->
             <Button Grid.Row="1" Grid.Column="0" Content="Button 4" Margin="5"/>
