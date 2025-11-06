@@ -126,8 +126,8 @@ As an Avalonia-based control, LAWgrid supports:
 
 ## License
 
-[Add your license information here]
+MIT
 
 ## Author
 
-[Add author information here]
+Lonnie Watson
