@@ -44,17 +44,41 @@ LAWgrid is a user control that displays tabular data in a grid format with exten
 
 ```
 LAWgrid/
-├── LAWgrid/              # Main grid control library
-│   ├── LAWgrid.axaml     # XAML layout definition
-│   ├── LAWgrid.axaml.cs  # Control implementation
-│   └── LAWgrid.csproj    # Project file
-├── GridTestBed/          # Test application
+├── LAWgrid/                        # Main grid control library
+│   ├── LAWgrid.axaml               # XAML layout definition
+│   ├── LAWgrid.axaml.cs            # Main partial class (constructor, variables, events)
+│   ├── LAWgrid.Properties.cs       # Partial class - Public properties
+│   ├── LAWgrid.Rendering.cs        # Partial class - Rendering methods
+│   ├── LAWgrid.SqlMethods.cs       # Partial class - SQL population methods
+│   ├── LAWgrid.DataPopulation.cs   # Partial class - Data population methods
+│   ├── LAWgrid.EventHandlers.cs    # Partial class - Event handlers
+│   ├── LAWgrid.PublicMethods.cs    # Partial class - Public utility methods
+│   ├── LAWgrid.PrivateMethods.cs   # Partial class - Private helper methods
+│   ├── LAWgrid.HelperClasses.cs    # Helper classes and data models
+│   └── LAWgrid.csproj              # Project file
+├── GridTestBed/                    # Test application
+│   ├── App.axaml
+│   ├── App.axaml.cs
 │   ├── MainWindow.axaml
 │   ├── MainWindow.axaml.cs
 │   ├── Program.cs
 │   └── GridTestBed.csproj
-└── LAWgrid.sln           # Solution file
+└── LAWgrid.sln                     # Solution file
 ```
+
+### LAWgrid Partial Class Organization
+
+The LAWgrid control is organized into multiple partial class files for better maintainability and code organization:
+
+- **LAWgrid.axaml.cs** (159 lines) - Core class with constructor, private variables, and event declarations
+- **LAWgrid.Properties.cs** (438 lines) - All public properties with DefaultValue attributes
+- **LAWgrid.Rendering.cs** (454 lines) - Main rendering logic and ReRender() method
+- **LAWgrid.SqlMethods.cs** (262 lines) - SQL Server query population methods
+- **LAWgrid.DataPopulation.cs** (150 lines) - Array and test data population methods
+- **LAWgrid.EventHandlers.cs** (398 lines) - Mouse, pointer, scroll, and context menu handlers
+- **LAWgrid.PublicMethods.cs** (85 lines) - Public utility methods for grid manipulation
+- **LAWgrid.PrivateMethods.cs** (127 lines) - Private helper methods
+- **LAWgrid.HelperClasses.cs** (914 lines) - Supporting classes and data models
 
 ## Dependencies
 
