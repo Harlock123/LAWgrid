@@ -113,6 +113,8 @@ Right-click on the grid to access:
 - **Fonts Larger**: Increase font sizes
 - **Fonts Smaller**: Decrease font sizes
 
+- **Alt MouseWheel will also increase and decrease displayed font sizes
+
 ## Development
 
 The GridTestBed project serves as a development and testing environment for the LAWgrid control. It includes three test buttons for different functionality testing scenarios.
