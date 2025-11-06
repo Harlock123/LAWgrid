@@ -125,11 +125,29 @@ public partial class LAWgrid
                             int tempval = 0;
 
 
-                            foreach (PropertyInfo property in item.GetType().GetProperties())
-                            {
-                                //property.GetValue(item)
+                            // Get schema to iterate through columns
+                            List<PropertyInfoModel> itemSchema = GetObjectSchema(item);
 
-                                string thestringtomeasure = property.GetValue(item)?.ToString() + "";
+                            foreach (PropertyInfoModel schemaItem in itemSchema)
+                            {
+                                // Get the value - handle both regular objects and ExpandoObjects
+                                object? cellValue = null;
+                                if (item is IDictionary<string, object> dictionary)
+                                {
+                                    // Handle ExpandoObject/dictionary
+                                    dictionary.TryGetValue(schemaItem.Name, out cellValue);
+                                }
+                                else
+                                {
+                                    // Handle regular object with properties
+                                    PropertyInfo? property = item.GetType().GetProperty(schemaItem.Name);
+                                    if (property != null)
+                                    {
+                                        cellValue = property.GetValue(item);
+                                    }
+                                }
+
+                                string thestringtomeasure = cellValue?.ToString() + "";
 
                                 if (_truncateColumns.Contains(idx))
                                 {
@@ -289,12 +307,31 @@ public partial class LAWgrid
                         else
                         {
                             string lastCellItemText = "";
-                            foreach (PropertyInfo property in item.GetType().GetProperties())
+
+                            // Get schema to iterate through columns
+                            List<PropertyInfoModel> schema = GetObjectSchema(item);
+
+                            foreach (PropertyInfoModel schemaItem in schema)
                             {
-                                //property.GetValue(item)
+                                // Get the value - handle both regular objects and ExpandoObjects
+                                object? cellValue = null;
+                                if (item is IDictionary<string, object> dictionary)
+                                {
+                                    // Handle ExpandoObject/dictionary
+                                    dictionary.TryGetValue(schemaItem.Name, out cellValue);
+                                }
+                                else
+                                {
+                                    // Handle regular object with properties
+                                    PropertyInfo? property = item.GetType().GetProperty(schemaItem.Name);
+                                    if (property != null)
+                                    {
+                                        cellValue = property.GetValue(item);
+                                    }
+                                }
 
                                 var formattedText =
-                                    new FormattedText(property.GetValue(item)?.ToString() + "",
+                                    new FormattedText(cellValue?.ToString() + "",
                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                                             _gridTypeface, _gridFontSize,
                                             _gridCellBrush);
@@ -327,7 +364,7 @@ public partial class LAWgrid
 
                                     TheCanvas.Children.Add(rr1);
 
-                                    string theText = (property.GetValue(item)?.ToString() + "").ToUpper().Trim();
+                                    string theText = (cellValue?.ToString() + "").ToUpper().Trim();
 
                                     if (theText == "TRUE" ||
                                         theText == "FALSE" ||
@@ -363,7 +400,6 @@ public partial class LAWgrid
                                     {
 
                                         TextBlock ttb = new TextBlock();
-                                        //ttb.Text = property.GetValue(item)?.ToString() + "";
                                         ttb.FontSize = _gridFontSize;
                                         ttb.Foreground = tcb;
                                         ttb.FontFamily = _gridTypeface.FontFamily;
@@ -376,7 +412,7 @@ public partial class LAWgrid
 
                                         int leftoffset = 2;
 
-                                        string thestringtoprint = property.GetValue(item)?.ToString() + "";
+                                        string thestringtoprint = cellValue?.ToString() + "";
 
                                         if (_truncateColumns.Contains(idx))
                                         {

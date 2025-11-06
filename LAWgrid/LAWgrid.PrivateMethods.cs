@@ -71,12 +71,27 @@ public partial class LAWgrid
     private List<PropertyInfoModel> GetObjectSchema(object obj)
     {
         List<PropertyInfoModel> schema = new List<PropertyInfoModel>();
-        Type type = obj.GetType();
-        PropertyInfo[] properties = type.GetProperties();
 
-        foreach (PropertyInfo property in properties)
+        // Check if the object is an ExpandoObject (or IDictionary<string, object>)
+        if (obj is IDictionary<string, object> dictionary)
         {
-            schema.Add(new PropertyInfoModel { Name = property.Name, Type = property.PropertyType });
+            // Handle dynamic objects (like ExpandoObject from SQL queries)
+            foreach (var kvp in dictionary)
+            {
+                Type valueType = kvp.Value?.GetType() ?? typeof(string);
+                schema.Add(new PropertyInfoModel { Name = kvp.Key, Type = valueType });
+            }
+        }
+        else
+        {
+            // Handle regular objects with properties
+            Type type = obj.GetType();
+            PropertyInfo[] properties = type.GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                schema.Add(new PropertyInfoModel { Name = property.Name, Type = property.PropertyType });
+            }
         }
 
         return schema;
