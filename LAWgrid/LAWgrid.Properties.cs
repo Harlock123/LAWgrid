@@ -434,5 +434,18 @@ public partial class LAWgrid : UserControl
         }
     }
 
+    // Controls whether boolean values (TRUE/FALSE/YES/NO) are rendered as images
+    // or as simple text (1/0/' ')
+    [DefaultValue(true)]
+    public bool RenderBooleansAsImages
+    {
+        get { return _renderBooleansAsImages; }
+        set
+        {
+            _renderBooleansAsImages = value;
+            ReRender();
+        }
+    }
+
     #endregion
 }

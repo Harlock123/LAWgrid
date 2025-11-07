@@ -365,24 +365,23 @@ public partial class LAWgrid
                                     TheCanvas.Children.Add(rr1);
 
                                     string theText = (cellValue?.ToString() + "").ToUpper().Trim();
+                                    bool isBooleanValue = (theText == "TRUE" || theText == "FALSE" ||
+                                                          theText == "YES" || theText == "NO");
 
-                                    if (theText == "TRUE" ||
-                                        theText == "FALSE" ||
-                                        theText == "YES" ||
-                                        theText == "NO")
+                                    if (isBooleanValue && _renderBooleansAsImages)
                                     {
                                         // Create an image control.
                                         var image = new Image();
 
                                         if (theText == "TRUE" || theText == "YES")
                                         {
-                                            image.Source = _folder;
+                                            image.Source = _checkMark;
                                             image.Width = _rowHeights[rowidx] - 2;
                                             image.Height = _rowHeights[rowidx] - 2;
                                         }
                                         else
                                         {
-                                            image.Source = _file;
+                                            image.Source = _redX;
                                             image.Width = _rowHeights[rowidx] - 2;
                                             image.Height = _rowHeights[rowidx] - 2;
                                         }
@@ -413,6 +412,13 @@ public partial class LAWgrid
                                         int leftoffset = 2;
 
                                         string thestringtoprint = cellValue?.ToString() + "";
+
+                                        // If this is a boolean value and we're not rendering as images,
+                                        // convert to 1/0 representation
+                                        if (isBooleanValue && !_renderBooleansAsImages)
+                                        {
+                                            thestringtoprint = (theText == "TRUE" || theText == "YES") ? "1" : "0";
+                                        }
 
                                         if (_truncateColumns.Contains(idx))
                                         {

@@ -103,6 +103,7 @@ public partial class LAWgrid : UserControl
 
         private List<int> _truncateColumns = new List<int>();
         private int _truncateColumnLength = 30;
+        private bool _renderBooleansAsImages = true;
         #endregion
 
         #region Constructor
