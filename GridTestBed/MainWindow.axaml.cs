@@ -90,7 +90,7 @@ public partial class MainWindow : Window
 
     private void CmdTest1OnClick(object? sender, RoutedEventArgs e)
     {
-        string ConnectionString = "Server=luisbhds.database.windows.net;Database=LUISBHDS_TEST;User Id=Harlock123;Password=LaserMaster#1";
+        string ConnectionString = "Server=luisbhds.database.windows.net;Database=LUISBHDS_TEST;User Id={MyUserName};Password={MyPasswordHere}";
         
         string Query = "SELECT top 100 * FROM dbo.MEMBERMAIN";
 
