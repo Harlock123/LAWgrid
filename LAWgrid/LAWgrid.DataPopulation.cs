@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Avalonia.Threading;
 
 namespace LAWgrid;
 
@@ -57,8 +59,8 @@ public partial class LAWgrid
         TheVerticleScrollBar.Value = 0;
         TheHorizontalScrollBar.Value = 0;
 
-        // Render the grid
-        ReRender();
+        // Render the grid on the UI thread
+        Dispatcher.UIThread.Post(() => ReRender());
     }
 
     /// <summary>
@@ -107,15 +109,15 @@ public partial class LAWgrid
         TheVerticleScrollBar.Value = 0;
         TheHorizontalScrollBar.Value = 0;
 
-        // Render the grid
-        ReRender();
+        // Render the grid on the UI thread
+        Dispatcher.UIThread.Post(() => ReRender());
     }
 
     public void ClearTestPopulate()
     {
         TheCanvas.Children.Clear();
         _items.Clear();
-        ReRender();
+        Dispatcher.UIThread.Post(() => ReRender());
     }
 
     private void PopulateTestData()
@@ -144,6 +146,9 @@ public partial class LAWgrid
 
             _items.Add(tt);
         }
+
+        // Render the grid on the UI thread
+        Dispatcher.UIThread.Post(() => ReRender());
     }
 
     #endregion

@@ -20,13 +20,13 @@ public partial class MainWindow : Window
 
     private void CmdTest3OnClick(object? sender, RoutedEventArgs e)
     {
-        
+        TheGridInTest.TestPopulate();
     }
 
     private async void CmdTest2OnClick(object? sender, RoutedEventArgs e)
     {
         string ConnectionString = "Server=luisbhds.database.windows.net;Database=LUISBHDS_TEST;User Id={MyUserName};Password={MyPasswordHere}";
-
+        
         string Query = "SELECT top 100 * FROM dbo.MEMBERMAIN";
 
         var result = await TheGridInTest.PopulateFromSqlQueryAsync(ConnectionString, Query);

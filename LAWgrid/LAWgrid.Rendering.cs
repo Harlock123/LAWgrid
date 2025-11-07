@@ -476,6 +476,9 @@ public partial class LAWgrid
                 RecalcItemUnderMouse();
 
                 GridHover?.Invoke(this, TheItemUnderTheMouse);
+
+                // Force visual update to ensure the canvas redraws
+                TheCanvas.InvalidateVisual();
             }
 
 

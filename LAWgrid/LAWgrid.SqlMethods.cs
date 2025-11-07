@@ -68,8 +68,8 @@ public partial class LAWgrid
             TheVerticleScrollBar.Value = 0;
             TheHorizontalScrollBar.Value = 0;
 
-            // Render the grid
-            ReRender();
+            // Render the grid on the UI thread
+            await Dispatcher.UIThread.InvokeAsync(() => ReRender());
 
             return true;
         }
@@ -145,8 +145,8 @@ public partial class LAWgrid
             TheVerticleScrollBar.Value = 0;
             TheHorizontalScrollBar.Value = 0;
 
-            // Render the grid
-            ReRender();
+            // Render the grid on the UI thread
+            Dispatcher.UIThread.Post(() => ReRender());
 
             return true;
         }
@@ -234,8 +234,8 @@ public partial class LAWgrid
             TheVerticleScrollBar.Value = 0;
             TheHorizontalScrollBar.Value = 0;
 
-            // Render the grid
-            ReRender();
+            // Render the grid on the UI thread
+            await Dispatcher.UIThread.InvokeAsync(() => ReRender());
 
             result.Success = true;
             result.RowCount = rowCount;
