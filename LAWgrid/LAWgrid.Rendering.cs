@@ -71,7 +71,7 @@ public partial class LAWgrid
                     ttb.FontFamily = GridTitleTypeface.FontFamily;
                     ttb.FontWeight = GridTitleTypeface.Weight;
                     ttb.FontStyle = GridTitleTypeface.Style;
-                    Canvas.SetLeft(ttb, 5);
+                    Canvas.SetLeft(ttb, _gridLeftOffset);
                     Canvas.SetTop(ttb, 0);
                     TheCanvas.Children.Add(ttb);
 
@@ -192,7 +192,7 @@ public partial class LAWgrid
                 if (_items.Count > 0)
                 {
                     List<PropertyInfoModel> schema = GetObjectSchema(_items[0]);
-                    int left = 5;  // Offset to prevent stroke clipping at canvas boundary
+                    int left = _gridLeftOffset;  // Platform-specific offset
                     int top = _gridTitleHeight;
                     int tempheight = 0;
 
@@ -273,7 +273,7 @@ public partial class LAWgrid
 
                 if (_items.Count > 0)
                 {
-                    int left = 5;  // Offset to prevent stroke clipping at canvas boundary
+                    int left = _gridLeftOffset;  // Platform-specific offset
                     int top = _gridHeaderAndTitleHeight;
 
                     int idx = 0;
@@ -298,7 +298,7 @@ public partial class LAWgrid
                         }
 
                         idx = 0;
-                        left = 5;
+                        left = _gridLeftOffset;
 
                         if (rowidx < _gridYShift)
                         {

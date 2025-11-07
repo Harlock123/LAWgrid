@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
@@ -104,6 +105,7 @@ public partial class LAWgrid : UserControl
         private List<int> _truncateColumns = new List<int>();
         private int _truncateColumnLength = 30;
         private bool _renderBooleansAsImages = true;
+        private int _gridLeftOffset; // Platform-specific offset: 0 for macOS, 5 for others
         #endregion
 
         #region Constructor
@@ -112,6 +114,9 @@ public partial class LAWgrid : UserControl
             InitializeComponent();
 
             _inDesignMode = Design.IsDesignMode;
+
+            // Set platform-specific left offset: 0 for macOS, 5 for Windows/Linux
+            _gridLeftOffset = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 0 : 5;
 
             HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
 
