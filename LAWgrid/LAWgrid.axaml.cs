@@ -115,9 +115,11 @@ public partial class LAWgrid : UserControl
 
             _inDesignMode = Design.IsDesignMode;
 
-            // Set platform-specific left offset: 0 for macOS, 5 for Windows/Linux
-            _gridLeftOffset = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 0 : 5;
+            // // Set platform-specific left offset: 0 for macOS, 5 for Windows/Linux
+            // _gridLeftOffset = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 0 : 5;
 
+            _gridLeftOffset = 0;
+            
             HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
 
             TheHorizontalScrollBar.Scroll += TheHorizontalScrollBar_scroll;
