@@ -40,7 +40,7 @@
             <Button Grid.Row="0" Grid.Column="2" x:Name="cmdTest3" Content="Test Populate" Margin="5"/>
             
             <!-- Second row of buttons -->
-            <Button Grid.Row="1" Grid.Column="0" Content="Button 4" Margin="5"/>
+            <Button Grid.Row="1" Grid.Column="0" x:Name="cmdTest4" Content="Populate With Lists" Margin="5"/>
             <Button Grid.Row="1" Grid.Column="1" Content="Button 5" Margin="5"/>
             <Button Grid.Row="1" Grid.Column="2" Content="Button 6" Margin="5"/>
         </Grid>
