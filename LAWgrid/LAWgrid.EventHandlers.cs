@@ -333,6 +333,8 @@ public partial class LAWgrid
 
     private void TheVerticleScrollBar_Scroll(object? sender, ScrollEventArgs e)
     {
+        if (_updatingScrollbars) return; // Ignore programmatic updates
+
         _gridYShift = 0;
 
         if (_items.Count > 0)
@@ -346,6 +348,8 @@ public partial class LAWgrid
 
     private void TheHorizontalScrollBar_scroll(object? sender, ScrollEventArgs e)
     {
+        if (_updatingScrollbars) return; // Ignore programmatic updates
+
         if (_items.Count > 0)
         {
             int maxposition = 0;
@@ -357,7 +361,7 @@ public partial class LAWgrid
 
             double delta = (maxposition / 100) * e.NewValue;
 
-            _gridXShift = (int)delta - 5;
+            _gridXShift = (int)delta;
 
             ReRender();
         }

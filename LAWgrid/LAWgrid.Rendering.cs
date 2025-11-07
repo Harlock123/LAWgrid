@@ -71,7 +71,7 @@ public partial class LAWgrid
                     ttb.FontFamily = GridTitleTypeface.FontFamily;
                     ttb.FontWeight = GridTitleTypeface.Weight;
                     ttb.FontStyle = GridTitleTypeface.Style;
-                    Canvas.SetLeft(ttb, 0);
+                    Canvas.SetLeft(ttb, 5);
                     Canvas.SetTop(ttb, 0);
                     TheCanvas.Children.Add(ttb);
 
@@ -192,7 +192,7 @@ public partial class LAWgrid
                 if (_items.Count > 0)
                 {
                     List<PropertyInfoModel> schema = GetObjectSchema(_items[0]);
-                    int left = 0;
+                    int left = 5;  // Offset to prevent stroke clipping at canvas boundary
                     int top = _gridTitleHeight;
                     int tempheight = 0;
 
@@ -273,7 +273,7 @@ public partial class LAWgrid
 
                 if (_items.Count > 0)
                 {
-                    int left = 0;
+                    int left = 5;  // Offset to prevent stroke clipping at canvas boundary
                     int top = _gridHeaderAndTitleHeight;
 
                     int idx = 0;
@@ -298,7 +298,7 @@ public partial class LAWgrid
                         }
 
                         idx = 0;
-                        left = 0;
+                        left = 5;
 
                         if (rowidx < _gridYShift)
                         {
@@ -463,8 +463,44 @@ public partial class LAWgrid
                 // Here we will only scroll whole rows by the setting
                 // the max value of the scrollbar to be the number of rows total in the grid
 
+                _updatingScrollbars = true; // Prevent scroll event handlers from firing
+
                 TheVerticleScrollBar.Minimum = 0;
                 TheVerticleScrollBar.Maximum = _items.Count;
+                TheVerticleScrollBar.Value = _gridYShift;
+
+                // Setup the Horizontal Scrollbar
+                // The horizontal scrollbar uses a percentage-based system (0-100)
+                TheHorizontalScrollBar.Minimum = 0;
+                TheHorizontalScrollBar.Maximum = 100;
+
+                // Synchronize scrollbar value with _gridXShift
+                // Calculate what percentage the current shift represents
+                int totalWidth = 0;
+                if (_colWidths != null && _colWidths.Length > 0)
+                {
+                    for (int i = 0; i < _colWidths.Length; i++)
+                    {
+                        totalWidth += _colWidths[i];
+                    }
+
+                    if (totalWidth > 0 && _gridXShift >= 0)
+                    {
+                        // Convert _gridXShift to percentage (0-100)
+                        double percentage = (_gridXShift * 100.0) / totalWidth;
+                        TheHorizontalScrollBar.Value = Math.Min(100, Math.Max(0, percentage));
+                    }
+                    else
+                    {
+                        TheHorizontalScrollBar.Value = 0;
+                    }
+                }
+                else
+                {
+                    TheHorizontalScrollBar.Value = 0;
+                }
+
+                _updatingScrollbars = false; // Re-enable scroll event handlers
 
                 //if (this.showCrossHairs)
                 //{

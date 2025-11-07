@@ -53,14 +53,13 @@ public partial class LAWgrid
             _items.Add(expando);
         }
 
-        // Reset scroll positions
-        _gridXShift = 0;
-        _gridYShift = 0;
-        TheVerticleScrollBar.Value = 0;
-        TheHorizontalScrollBar.Value = 0;
-
-        // Render the grid on the UI thread
-        Dispatcher.UIThread.Post(() => ReRender());
+        // Reset scroll positions and render on UI thread
+        Dispatcher.UIThread.Post(() =>
+        {
+            _gridXShift = 0;
+            _gridYShift = 0;
+            ReRender();
+        });
     }
 
     /// <summary>
@@ -103,21 +102,25 @@ public partial class LAWgrid
             _items.Add(expando);
         }
 
-        // Reset scroll positions
-        _gridXShift = 0;
-        _gridYShift = 0;
-        TheVerticleScrollBar.Value = 0;
-        TheHorizontalScrollBar.Value = 0;
-
-        // Render the grid on the UI thread
-        Dispatcher.UIThread.Post(() => ReRender());
+        // Reset scroll positions and render on UI thread
+        Dispatcher.UIThread.Post(() =>
+        {
+            _gridXShift = 0;
+            _gridYShift = 0;
+            ReRender();
+        });
     }
 
     public void ClearTestPopulate()
     {
-        TheCanvas.Children.Clear();
-        _items.Clear();
-        Dispatcher.UIThread.Post(() => ReRender());
+        Dispatcher.UIThread.Post(() =>
+        {
+            TheCanvas.Children.Clear();
+            _items.Clear();
+            _gridXShift = 0;
+            _gridYShift = 0;
+            ReRender();
+        });
     }
 
     private void PopulateTestData()
@@ -147,8 +150,13 @@ public partial class LAWgrid
             _items.Add(tt);
         }
 
-        // Render the grid on the UI thread
-        Dispatcher.UIThread.Post(() => ReRender());
+        // Reset scroll positions and render on the UI thread
+        Dispatcher.UIThread.Post(() =>
+        {
+            _gridXShift = 0;
+            _gridYShift = 0;
+            ReRender();
+        });
     }
 
     #endregion

@@ -68,6 +68,7 @@ public partial class LAWgrid : UserControl
         private int _scrollMultiplier = 3;
         private bool _suspendRendering;
         private bool _autosizeCellsToContents = true;
+        private bool _updatingScrollbars = false;
 
         private bool _populateWithTestData;
 

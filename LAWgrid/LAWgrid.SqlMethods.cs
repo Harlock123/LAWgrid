@@ -62,14 +62,13 @@ public partial class LAWgrid
                 _items.Add(expando);
             }
 
-            // Reset scroll positions
-            _gridXShift = 0;
-            _gridYShift = 0;
-            TheVerticleScrollBar.Value = 0;
-            TheHorizontalScrollBar.Value = 0;
-
-            // Render the grid on the UI thread
-            await Dispatcher.UIThread.InvokeAsync(() => ReRender());
+            // Reset scroll positions and render on UI thread
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                _gridXShift = 0;
+                _gridYShift = 0;
+                ReRender();
+            });
 
             return true;
         }
@@ -139,14 +138,13 @@ public partial class LAWgrid
                 _items.Add(expando);
             }
 
-            // Reset scroll positions
-            _gridXShift = 0;
-            _gridYShift = 0;
-            TheVerticleScrollBar.Value = 0;
-            TheHorizontalScrollBar.Value = 0;
-
-            // Render the grid on the UI thread
-            Dispatcher.UIThread.Post(() => ReRender());
+            // Reset scroll positions and render on UI thread
+            Dispatcher.UIThread.Post(() =>
+            {
+                _gridXShift = 0;
+                _gridYShift = 0;
+                ReRender();
+            });
 
             return true;
         }
@@ -228,14 +226,13 @@ public partial class LAWgrid
                 rowCount++;
             }
 
-            // Reset scroll positions
-            _gridXShift = 0;
-            _gridYShift = 0;
-            TheVerticleScrollBar.Value = 0;
-            TheHorizontalScrollBar.Value = 0;
-
-            // Render the grid on the UI thread
-            await Dispatcher.UIThread.InvokeAsync(() => ReRender());
+            // Reset scroll positions and render on UI thread
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                _gridXShift = 0;
+                _gridYShift = 0;
+                ReRender();
+            });
 
             result.Success = true;
             result.RowCount = rowCount;
