@@ -129,6 +129,8 @@ public partial class LAWgrid : UserControl
             PointerPressed += OnPointerPressed;
             PointerReleased += OnPointerReleased;
 
+            TheCanvas.SizeChanged += OnCanvasSizeChanged;
+
             _doubleClickTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             _doubleClickTimer.Tick += DoubleClickTimer_Tick;
 

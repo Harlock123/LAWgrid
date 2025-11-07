@@ -9,6 +9,8 @@ public partial class LAWgrid
 
     public void SetGridSize(int width, int height)
     {
+        // Note: When using Stretch alignment in XAML, Canvas size is determined by container
+        // This method allows programmatic sizing but may be overridden by layout system
         TheCanvas.Width = width;
         TheCanvas.Height = height;
         Width = width + 12;

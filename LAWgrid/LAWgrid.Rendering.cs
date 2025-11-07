@@ -39,7 +39,7 @@ public partial class LAWgrid
                         GridTitleBrush);
 
                     Rectangle rr = new Rectangle();
-                    rr.Width = TheCanvas.Width;
+                    rr.Width = TheCanvas.Bounds.Width;
                     //rr.Height = formattedText.Height;
 
                     if (GridTitleHeight < formattedText.Height)
@@ -344,8 +344,8 @@ public partial class LAWgrid
 
                                 // Do our Grid Clipping Here
                                 if ((left - _gridXShift + rr.Width > 0) &&
-                                    (top <= TheCanvas.Height) &&
-                                    (left - _gridXShift <= TheCanvas.Width))
+                                    (top <= TheCanvas.Bounds.Height) &&
+                                    (left - _gridXShift <= TheCanvas.Bounds.Width))
                                 {
 
                                     Canvas.SetLeft(rr, left - _gridXShift);

@@ -19,7 +19,9 @@
         
         <!-- LAWGrid in top 80% -->
         <Border Grid.Row="0" Grid.Column="0" BorderBrush="Gray" BorderThickness="1">
-            <lawgrid:LAWgrid Width="800" x:Name="TheGridInTest"/>
+            <lawgrid:LAWgrid x:Name="TheGridInTest"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"/>
         </Border>
         
         <!-- Button panel in bottom 20% -->

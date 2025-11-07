@@ -1,5 +1,6 @@
 using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Controls.Primitives;
@@ -373,6 +374,15 @@ public partial class LAWgrid
     {
         _clickCounter = 0;
         _doubleClickTimer.Stop();
+    }
+
+    private void OnCanvasSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        // Re-render when the canvas size changes (window resize)
+        if (!_suspendRendering)
+        {
+            ReRender();
+        }
     }
 
     #endregion

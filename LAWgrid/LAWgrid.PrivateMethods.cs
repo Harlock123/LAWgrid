@@ -99,14 +99,14 @@ public partial class LAWgrid
 
     private void RenderCrossHairs()
     {
-        if (_curMouseY >= TheCanvas.Height || _curMouseX >= TheCanvas.Width)
+        if (_curMouseY >= TheCanvas.Bounds.Height || _curMouseX >= TheCanvas.Bounds.Width)
             return;
 
         Line l1 = new Line();
         l1.Stroke = _crossHairBrush;
         l1.StrokeThickness = 1;
         l1.StartPoint = new Point(0, _curMouseY);
-        l1.EndPoint = new Point(TheCanvas.Width, _curMouseY);
+        l1.EndPoint = new Point(TheCanvas.Bounds.Width, _curMouseY);
 
         TheCanvas.Children.Add(l1);
 
@@ -114,7 +114,7 @@ public partial class LAWgrid
         l2.Stroke = _crossHairBrush;
         l2.StrokeThickness = 1;
         l2.StartPoint = new Point(_curMouseX, 0);
-        l2.EndPoint = new Point(_curMouseX, TheCanvas.Height);
+        l2.EndPoint = new Point(_curMouseX, TheCanvas.Bounds.Height);
 
         TheCanvas.Children.Add(l2);
     }
