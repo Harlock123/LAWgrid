@@ -341,7 +341,11 @@ public partial class LAWgrid
         if (_items.Count > 0)
         {
             _gridYShift = (int)e.NewValue;
+
+            // Set flag to prevent ReRender from updating scrollbar back
+            _isHandlingScrollEvent = true;
             ReRender();
+            _isHandlingScrollEvent = false;
         }
 
         //throw new NotImplementedException();
@@ -364,7 +368,10 @@ public partial class LAWgrid
 
             _gridXShift = (int)delta;
 
+            // Set flag to prevent ReRender from updating scrollbar back
+            _isHandlingScrollEvent = true;
             ReRender();
+            _isHandlingScrollEvent = false;
         }
 
         //throw new NotImplementedException();
