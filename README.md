@@ -10,10 +10,12 @@ LAWgrid is a user control that displays tabular data in a grid format with exten
 
 ### Data Population
 - **SQL Server Integration**: Direct population from SQL Server queries via `PopulateFromSqlQuerySync()` method
+- **DataTable Support**: Populate from .NET DataTable objects via `PopulateFromDataTable()` method
 - **Test Data Support**: Built-in test data population for development and testing
 
 ### Visual Customization
 - Configurable colors for backgrounds, cells, headers, and highlights
+- **GreenBar Mode**: Alternating row colors for improved readability
 - Customizable fonts and typefaces (title, header, and cell content)
 - Adjustable font sizes for different grid sections
 - Configurable cell padding (width and height)
@@ -39,6 +41,13 @@ LAWgrid is a user control that displays tabular data in a grid format with exten
 - Red X icon
 - Folder icon
 - File icon
+
+### Image Export
+- **PNG Export**: Save grid visual to PNG format
+- **JPEG Export**: Save grid visual to JPEG with quality control
+- **BMP Export**: Save grid visual to BMP format
+- **Desktop Quick Save**: One-click save to Desktop
+- **Clipboard Support**: Copy grid visual to clipboard (cross-platform)
 
 ## Project Structure
 
@@ -85,21 +94,64 @@ The LAWgrid control is organized into multiple partial class files for better ma
 - **Avalonia** (v11.2.2): Cross-platform UI framework
 - **Avalonia.Desktop** (v11.2.2): Desktop-specific Avalonia components
 - **Microsoft.Data.SqlClient** (v6.0.1): SQL Server data access
-- **Target Framework**: .NET 8.0
+- **SkiaSharp** (v2.88.9): Image encoding for JPEG/BMP export
+- **Target Framework**: .NET 9.0
 
-## Usage Example
+## Usage Examples
+
+### Data Population
 
 ```csharp
 // Basic SQL query population
 string connectionString = "Server=myserver.database.windows.net;Database=MyDB;User Id=username;Password=password";
 string query = "SELECT * FROM MyTable";
-
 TheGridInTest.PopulateFromSqlQuerySync(connectionString, query);
+```
+
+```csharp
+// Populate from DataTable
+DataTable dt = new DataTable();
+dt.Columns.Add("ID", typeof(int));
+dt.Columns.Add("Name", typeof(string));
+dt.Rows.Add(1, "John Doe");
+dt.Rows.Add(2, "Jane Smith");
+TheGridInTest.PopulateFromDataTable(dt);
 ```
 
 ```csharp
 // Populate with test data
 TheGridInTest.TestPopulate();
+```
+
+### Visual Customization
+
+```csharp
+// Enable GreenBar mode with alternating row colors
+TheGridInTest.GreenBarMode = true;
+TheGridInTest.GreenBarColor1 = Brushes.White;
+TheGridInTest.GreenBarColor2 = Brushes.PaleGreen;
+
+// Or toggle it programmatically
+TheGridInTest.ToggleGreenBarMode();
+```
+
+### Image Export
+
+```csharp
+// Save to Desktop (quick and easy)
+string? filePath = TheGridInTest.SaveGridToDesktop();
+
+// Save to specific location as PNG
+TheGridInTest.SaveGridAsPng("/path/to/output.png");
+
+// Save as JPEG with quality control (0-100)
+TheGridInTest.SaveGridAsJpg("/path/to/output.jpg", quality: 90);
+
+// Save as BMP
+TheGridInTest.SaveGridAsBmp("/path/to/output.bmp");
+
+// Copy to clipboard (cross-platform)
+await TheGridInTest.CopyGridToClipboardAsync();
 ```
 
 ## Configuration Options
@@ -125,6 +177,9 @@ TheGridInTest.TestPopulate();
 - `GridSelectedItemBrush`: Selected item color (default: AliceBlue)
 - `GridTitleBackground`: Title area background (default: Blue)
 - `GridHeaderBackground`: Header area background (default: Cyan)
+- `GreenBarMode`: Enable alternating row colors (default: false)
+- `GreenBarColor1`: First alternating row color (default: White)
+- `GreenBarColor2`: Second alternating row color (default: PaleGreen)
 
 ### Interaction
 - `ShowCrossHairs`: Enable/disable crosshair cursor (default: true)
@@ -139,9 +194,62 @@ Right-click on the grid to access:
 
 - **Alt MouseWheel will also increase and decrease displayed font sizes
 
+## API Reference
+
+### Data Population Methods
+
+#### `PopulateFromDataTable(DataTable dataTable)`
+Populates the grid from a .NET DataTable object.
+- **Parameters**:
+  - `dataTable`: The DataTable containing the data to display
+- **Returns**: `bool` - True if successful, false otherwise
+- **Example**: See Usage Examples section above
+
+### Visual Customization Methods
+
+#### `ToggleGreenBarMode()`
+Toggles the GreenBarMode on or off (alternating row colors).
+- **Returns**: void
+- **Example**: `TheGridInTest.ToggleGreenBarMode();`
+
+### Image Export Methods
+
+#### `SaveGridToDesktop()`
+Saves the grid visual as a PNG file to the user's Desktop.
+- **Returns**: `string?` - The full path to the saved file, or null if failed
+- **Example**: `string? path = TheGridInTest.SaveGridToDesktop();`
+
+#### `SaveGridAsPng(string filePath)`
+Saves the grid visual as a PNG file to a specific location.
+- **Parameters**:
+  - `filePath`: The file path where to save the PNG
+- **Returns**: `bool` - True if successful, false otherwise
+- **Example**: `TheGridInTest.SaveGridAsPng("/path/to/output.png");`
+
+#### `SaveGridAsJpg(string filePath, int quality = 90)`
+Saves the grid visual as a JPEG file with configurable quality.
+- **Parameters**:
+  - `filePath`: The file path where to save the JPEG
+  - `quality`: JPEG quality (0-100, default: 90)
+- **Returns**: `bool` - True if successful, false otherwise
+- **Example**: `TheGridInTest.SaveGridAsJpg("/path/to/output.jpg", quality: 85);`
+
+#### `SaveGridAsBmp(string filePath)`
+Saves the grid visual as a BMP file.
+- **Parameters**:
+  - `filePath`: The file path where to save the BMP
+- **Returns**: `bool` - True if successful, false otherwise
+- **Example**: `TheGridInTest.SaveGridAsBmp("/path/to/output.bmp");`
+
+#### `CopyGridToClipboardAsync()`
+Captures the grid visual as a PNG and copies it to the clipboard (cross-platform).
+- **Returns**: `Task<bool>` - True if successful, false otherwise
+- **Example**: `bool success = await TheGridInTest.CopyGridToClipboardAsync();`
+- **Note**: This is an async method and must be awaited
+
 ## Development
 
-The GridTestBed project serves as a development and testing environment for the LAWgrid control. It includes three test buttons for different functionality testing scenarios.
+The GridTestBed project serves as a development and testing environment for the LAWgrid control. It includes multiple test buttons for different functionality testing scenarios.
 
 ## Platform Support
 

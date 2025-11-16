@@ -29,22 +29,28 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <!-- First row of buttons -->
             <Button Grid.Row="0" Grid.Column="0" x:Name="cmdTest1" Content="Database Populate Test Sync" Margin="5"/>
             <Button Grid.Row="0" Grid.Column="1" x:Name="cmdTest2" Content="Database Populate Test ASync" Margin="5"/>
             <Button Grid.Row="0" Grid.Column="2" x:Name="cmdTest3" Content="Test Populate" Margin="5"/>
-            
+
             <!-- Second row of buttons -->
             <Button Grid.Row="1" Grid.Column="0" x:Name="cmdTest4" Content="Populate With Lists" Margin="5"/>
             <Button Grid.Row="1" Grid.Column="1" x:Name="cmdTest5" Content="Populate From DataTable" Margin="5"/>
             <Button Grid.Row="1" Grid.Column="2" x:Name="cmdTest6" Content="Toggle GreenBar Mode" Margin="5"/>
+
+            <!-- Third row of buttons -->
+            <Button Grid.Row="2" Grid.Column="0" x:Name="cmdTest7" Content="Save Grid to Desktop" Margin="5"/>
+            <Button Grid.Row="2" Grid.Column="1" Content="Button 8" Margin="5"/>
+            <Button Grid.Row="2" Grid.Column="2" Content="Button 9" Margin="5"/>
         </Grid>
     </Grid>
 </Window>

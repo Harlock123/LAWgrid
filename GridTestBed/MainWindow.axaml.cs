@@ -19,6 +19,7 @@ public partial class MainWindow : Window
         cmdTest4.Click += CmdTest4OnClick;
         cmdTest5.Click += CmdTest5OnClick;
         cmdTest6.Click += CmdTest6OnClick;
+        cmdTest7.Click += CmdTest7OnClick;
 
         TheGridInTest.TestPopulate();
     }
@@ -149,5 +150,22 @@ public partial class MainWindow : Window
 
         // Log the current state to debug console
         Debug.WriteLine($"GreenBarMode is now: {TheGridInTest.GreenBarMode}");
+    }
+
+    private void CmdTest7OnClick(object? sender, RoutedEventArgs e)
+    {
+        // Save the grid to Desktop
+        string? filePath = TheGridInTest.SaveGridToDesktop();
+
+        // Log the result to debug console
+        if (filePath != null)
+        {
+            Debug.WriteLine($"Grid successfully saved to: {filePath}");
+            Debug.WriteLine("You can now open this file with any image viewer or paste it into documents.");
+        }
+        else
+        {
+            Debug.WriteLine("Failed to save grid to Desktop");
+        }
     }
 }
