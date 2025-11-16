@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -15,9 +16,9 @@ public partial class MainWindow : Window
         cmdTest1.Click += CmdTest1OnClick;
         cmdTest2.Click += CmdTest2OnClick;
         cmdTest3.Click += CmdTest3OnClick;
-
         cmdTest4.Click += CmdTest4OnClick;
-        
+        cmdTest5.Click += CmdTest5OnClick;
+
         TheGridInTest.TestPopulate();
     }
 
@@ -61,6 +62,46 @@ public partial class MainWindow : Window
         else
         {
             Debug.WriteLine($"ListPopulate failed: {result.ErrorMessage}");
+        }
+    }
+
+    private void CmdTest5OnClick(object? sender, RoutedEventArgs e)
+    {
+        // Create a sample DataTable
+        DataTable dt = new DataTable("SampleData");
+
+        // Add columns
+        dt.Columns.Add("EmployeeID", typeof(int));
+        dt.Columns.Add("Name", typeof(string));
+        dt.Columns.Add("Department", typeof(string));
+        dt.Columns.Add("Position", typeof(string));
+        dt.Columns.Add("Salary", typeof(decimal));
+        dt.Columns.Add("Active", typeof(bool));
+        dt.Columns.Add("HireDate", typeof(DateTime));
+
+        // Add sample data rows
+        dt.Rows.Add(1, "John Smith", "Engineering", "Software Engineer", 95000, true, new DateTime(2020, 1, 15));
+        dt.Rows.Add(2, "Jane Doe", "Marketing", "Marketing Manager", 105000, true, new DateTime(2019, 6, 20));
+        dt.Rows.Add(3, "Bob Johnson", "Sales", "Sales Representative", 75000, true, new DateTime(2021, 3, 10));
+        dt.Rows.Add(4, "Alice Williams", "Engineering", "Senior Developer", 125000, true, new DateTime(2018, 9, 5));
+        dt.Rows.Add(5, "Charlie Brown", "HR", "HR Specialist", 70000, false, new DateTime(2022, 11, 18));
+        dt.Rows.Add(6, "Diana Prince", "Engineering", "DevOps Engineer", 110000, true, new DateTime(2020, 7, 22));
+        dt.Rows.Add(7, "Eve Davis", "Finance", "Financial Analyst", 85000, true, new DateTime(2021, 1, 8));
+        dt.Rows.Add(8, "Frank Miller", "Sales", "Sales Director", 135000, true, new DateTime(2017, 4, 12));
+        dt.Rows.Add(9, "Grace Lee", "Marketing", "Content Strategist", 80000, false, new DateTime(2023, 2, 14));
+        dt.Rows.Add(10, "Henry Taylor", "Engineering", "QA Engineer", 90000, true, new DateTime(2020, 10, 30));
+
+        // Populate the grid from the DataTable
+        bool success = TheGridInTest.PopulateFromDataTable(dt);
+
+        // Log the result to the debug console
+        if (success)
+        {
+            Debug.WriteLine($"PopulateFromDataTable succeeded: Loaded {dt.Rows.Count} rows with {dt.Columns.Count} columns");
+        }
+        else
+        {
+            Debug.WriteLine("PopulateFromDataTable failed");
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using Avalonia.Threading;
 
 namespace LAWgrid;
@@ -109,6 +110,70 @@ public partial class LAWgrid
             _gridYShift = 0;
             ReRender();
         });
+    }
+
+    /// <summary>
+    /// Populates the grid from a .NET DataTable object
+    /// </summary>
+    /// <param name="dataTable">The DataTable containing the data to display</param>
+    /// <returns>True if successful, false otherwise</returns>
+    public bool PopulateFromDataTable(DataTable dataTable)
+    {
+        if (dataTable == null)
+            throw new ArgumentNullException(nameof(dataTable), "DataTable cannot be null");
+
+        try
+        {
+            // Clear existing items
+            _items.Clear();
+            _selecteditems.Clear();
+
+            // Get column names from DataTable
+            var columnNames = new List<string>();
+            foreach (DataColumn column in dataTable.Columns)
+            {
+                columnNames.Add(column.ColumnName);
+            }
+
+            // Read all rows
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var expando = new System.Dynamic.ExpandoObject() as IDictionary<string, object>;
+
+                foreach (var columnName in columnNames)
+                {
+                    object value = row[columnName];
+
+                    // Handle DBNull and convert to string for display
+                    if (value == DBNull.Value || value == null)
+                    {
+                        expando[columnName] = string.Empty;
+                    }
+                    else
+                    {
+                        expando[columnName] = value.ToString() ?? string.Empty;
+                    }
+                }
+
+                _items.Add(expando);
+            }
+
+            // Reset scroll positions and render on UI thread
+            Dispatcher.UIThread.Post(() =>
+            {
+                _gridXShift = 0;
+                _gridYShift = 0;
+                ReRender();
+            });
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            // Log or handle errors
+            System.Diagnostics.Debug.WriteLine($"Error populating from DataTable: {ex.Message}");
+            return false;
+        }
     }
 
     public void ClearTestPopulate()
