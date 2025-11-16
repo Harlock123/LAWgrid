@@ -282,7 +282,18 @@ public partial class LAWgrid
                     foreach (object item in _items)
                     {
 
-                        IBrush tbb = _gridCellBrush;
+                        // Set default cell background brush based on GreenBarMode
+                        IBrush tbb;
+                        if (_greenBarMode)
+                        {
+                            // Alternate between GreenBarColor1 and GreenBarColor2
+                            tbb = (rowidx % 2 == 0) ? _greenBarColor1 : _greenBarColor2;
+                        }
+                        else
+                        {
+                            tbb = _gridCellBrush;
+                        }
+
                         IBrush tcb = _gridCellContentBrush;
 
                         if (_selecteditems.Contains(item))

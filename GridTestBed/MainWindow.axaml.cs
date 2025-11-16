@@ -18,6 +18,7 @@ public partial class MainWindow : Window
         cmdTest3.Click += CmdTest3OnClick;
         cmdTest4.Click += CmdTest4OnClick;
         cmdTest5.Click += CmdTest5OnClick;
+        cmdTest6.Click += CmdTest6OnClick;
 
         TheGridInTest.TestPopulate();
     }
@@ -132,12 +133,21 @@ public partial class MainWindow : Window
     private void CmdTest1OnClick(object? sender, RoutedEventArgs e)
     {
         string ConnectionString = "Server=luisbhds.database.windows.net;Database=LUISBHDS_TEST;User Id={MyUserName};Password={MyPasswordHere}";
-        
+
         string Query = "SELECT top 100 * FROM dbo.MEMBERMAIN";
 
         TheGridInTest.RenderBooleansAsImages = false;
         TheGridInTest.PopulateFromSqlQuerySync(ConnectionString, Query);
-        
 
+
+    }
+
+    private void CmdTest6OnClick(object? sender, RoutedEventArgs e)
+    {
+        // Toggle the GreenBarMode
+        TheGridInTest.ToggleGreenBarMode();
+
+        // Log the current state to debug console
+        Debug.WriteLine($"GreenBarMode is now: {TheGridInTest.GreenBarMode}");
     }
 }

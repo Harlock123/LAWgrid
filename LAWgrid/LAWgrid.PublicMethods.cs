@@ -83,5 +83,13 @@ public partial class LAWgrid
         ReRender();
     }
 
+    /// <summary>
+    /// Toggles the GreenBarMode on or off (alternating row colors)
+    /// </summary>
+    public void ToggleGreenBarMode()
+    {
+        GreenBarMode = !GreenBarMode;
+    }
+
     #endregion
 }

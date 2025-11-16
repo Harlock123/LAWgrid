@@ -209,6 +209,42 @@ public partial class LAWgrid : UserControl
         }
     }
 
+    // Enables alternating row colors (green bar mode)
+    [DefaultValue(false)]
+    public bool GreenBarMode
+    {
+        get { return _greenBarMode; }
+        set
+        {
+            _greenBarMode = value;
+            ReRender();
+        }
+    }
+
+    // First alternating row color for GreenBarMode (even rows)
+    [DefaultValue("White")]
+    public IBrush GreenBarColor1
+    {
+        get { return _greenBarColor1; }
+        set
+        {
+            _greenBarColor1 = value;
+            ReRender();
+        }
+    }
+
+    // Second alternating row color for GreenBarMode (odd rows)
+    [DefaultValue("PaleGreen")]
+    public IBrush GreenBarColor2
+    {
+        get { return _greenBarColor2; }
+        set
+        {
+            _greenBarColor2 = value;
+            ReRender();
+        }
+    }
+
     // this is the font definition for the grid title
     [DefaultValue("Arial, 12, Normal, Normal")]
     public Typeface GridTitleTypeface

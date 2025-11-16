@@ -40,6 +40,10 @@ public partial class LAWgrid : UserControl
         private IBrush _gridSelectedItemBrush = Brushes.AliceBlue;
         private IBrush _gridCellHighlightContentBrush = Brushes.Black;
 
+        private bool _greenBarMode = false;
+        private IBrush _greenBarColor1 = Brushes.White;
+        private IBrush _greenBarColor2 = Brushes.PaleGreen;
+
         private IBrush _gridTitleBrush = Brushes.White;
         private IBrush _gridHeaderBrush = Brushes.DarkBlue;
         private IBrush _gridTitleBackground = Brushes.Blue;
