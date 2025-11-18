@@ -49,7 +49,7 @@
 
             <!-- Third row of buttons -->
             <Button Grid.Row="2" Grid.Column="0" x:Name="cmdTest7" Content="Save Grid to Desktop" Margin="5"/>
-            <Button Grid.Row="2" Grid.Column="1" Content="Button 8" Margin="5"/>
+            <Button Grid.Row="2" Grid.Column="1" x:Name="cmdTest8" Content="Populate With Arrays" Margin="5"/>
             <Button Grid.Row="2" Grid.Column="2" Content="Button 9" Margin="5"/>
         </Grid>
     </Grid>

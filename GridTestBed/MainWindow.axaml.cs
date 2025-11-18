@@ -20,6 +20,7 @@ public partial class MainWindow : Window
         cmdTest5.Click += CmdTest5OnClick;
         cmdTest6.Click += CmdTest6OnClick;
         cmdTest7.Click += CmdTest7OnClick;
+        cmdTest8.Click += CmdTest8OnClick;
 
         TheGridInTest.TestPopulate();
     }
@@ -167,5 +168,31 @@ public partial class MainWindow : Window
         {
             Debug.WriteLine("Failed to save grid to Desktop");
         }
+    }
+
+    private void CmdTest8OnClick(object? sender, RoutedEventArgs e)
+    {
+        // Create headers: MONTH1, MONTH2, ... MONTH24
+        string[] headers = new string[24];
+        for (int i = 0; i < 24; i++)
+        {
+            headers[i] = "MONTH" + (i + 1).ToString();
+        }
+
+        // Create 24x24 array of '0.00'
+        string[,] data = new string[24, 24];
+        for (int row = 0; row < 24; row++)
+        {
+            for (int col = 0; col < 24; col++)
+            {
+                data[row, col] = "0.00";
+            }
+        }
+
+        // Populate the grid
+        TheGridInTest.PopulateFromArrays(headers, data);
+
+        // Log to debug console
+        Debug.WriteLine("Grid populated with 24x24 array of '0.00' values");
     }
 }
