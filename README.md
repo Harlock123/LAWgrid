@@ -4,14 +4,26 @@ A custom data grid control built for Avalonia UI - a cross-platform .NET UI fram
 
 ## Overview
 
-LAWgrid is a user control that displays tabular data in a grid format with extensive customization options and direct SQL Server integration capabilities.
+LAWgrid is a highly customizable user control that displays tabular data in a grid format with extensive customization options and direct integration with multiple database systems including SQL Server, Oracle, MySQL, and DB2.
 
 ## Features
 
 ### Data Population
-- **SQL Server Integration**: Direct population from SQL Server queries via `PopulateFromSqlQuerySync()` method
-- **DataTable Support**: Populate from .NET DataTable objects via `PopulateFromDataTable()` method
+- **SQL Server Integration**: Direct population from SQL Server queries
+- **Oracle Integration**: Direct population from Oracle database queries
+- **MySQL Integration**: Direct population from MySQL database queries
+- **DB2 Integration**: Direct population from IBM DB2 database queries
+- **DataTable Support**: Populate from .NET DataTable objects
 - **Test Data Support**: Built-in test data population for development and testing
+
+### Data Export
+- **Excel Export**: Export grid data to XLSX format with full formatting support
+  - Preserves colors (backgrounds and text)
+  - Maintains font sizes and styles
+  - Supports GreenBar alternating row colors
+  - Auto-fits columns to content
+  - Includes title and header rows
+  - Save file dialog with customizable filename
 
 ### Visual Customization
 - Configurable colors for backgrounds, cells, headers, and highlights
@@ -26,7 +38,7 @@ LAWgrid is a user control that displays tabular data in a grid format with exten
 - **Cell Highlighting**: Visual feedback when hovering over cells
 - **Cell Selection**: Support for selecting individual items
 - **Double-Click Detection**: Built-in double-click timer for handling user interactions
-- **Context Menu**: Right-click menu with font size adjustment options
+- **Context Menu**: Right-click menu with font size adjustment and Excel export options
 - **Scrolling**: Both horizontal and vertical scrollbars with configurable scroll multiplier
 
 ### Layout & Rendering
@@ -58,8 +70,12 @@ LAWgrid/
 │   ├── LAWgrid.axaml.cs            # Main partial class (constructor, variables, events)
 │   ├── LAWgrid.Properties.cs       # Partial class - Public properties
 │   ├── LAWgrid.Rendering.cs        # Partial class - Rendering methods
-│   ├── LAWgrid.SqlMethods.cs       # Partial class - SQL population methods
+│   ├── LAWgrid.SqlMethods.cs       # Partial class - SQL Server population methods
+│   ├── LAWgrid.OracleMethods.cs    # Partial class - Oracle population methods
+│   ├── LAWgrid.MySqlMethods.cs     # Partial class - MySQL population methods
+│   ├── LAWgrid.Db2Methods.cs       # Partial class - DB2 population methods
 │   ├── LAWgrid.DataPopulation.cs   # Partial class - Data population methods
+│   ├── LAWgrid.ExcelMethods.cs     # Partial class - Excel export methods
 │   ├── LAWgrid.EventHandlers.cs    # Partial class - Event handlers
 │   ├── LAWgrid.PublicMethods.cs    # Partial class - Public utility methods
 │   ├── LAWgrid.PrivateMethods.cs   # Partial class - Private helper methods
@@ -79,35 +95,117 @@ LAWgrid/
 
 The LAWgrid control is organized into multiple partial class files for better maintainability and code organization:
 
-- **LAWgrid.axaml.cs** (159 lines) - Core class with constructor, private variables, and event declarations
-- **LAWgrid.Properties.cs** (438 lines) - All public properties with DefaultValue attributes
-- **LAWgrid.Rendering.cs** (454 lines) - Main rendering logic and ReRender() method
-- **LAWgrid.SqlMethods.cs** (262 lines) - SQL Server query population methods
-- **LAWgrid.DataPopulation.cs** (150 lines) - Array and test data population methods
-- **LAWgrid.EventHandlers.cs** (398 lines) - Mouse, pointer, scroll, and context menu handlers
-- **LAWgrid.PublicMethods.cs** (85 lines) - Public utility methods for grid manipulation
-- **LAWgrid.PrivateMethods.cs** (127 lines) - Private helper methods
-- **LAWgrid.HelperClasses.cs** (914 lines) - Supporting classes and data models
+- **LAWgrid.axaml.cs** - Core class with constructor, private variables, and event declarations
+- **LAWgrid.Properties.cs** - All public properties with DefaultValue attributes
+- **LAWgrid.Rendering.cs** - Main rendering logic and ReRender() method
+- **LAWgrid.SqlMethods.cs** - SQL Server query population methods
+- **LAWgrid.OracleMethods.cs** - Oracle database query population methods
+- **LAWgrid.MySqlMethods.cs** - MySQL database query population methods
+- **LAWgrid.Db2Methods.cs** - DB2 database query population methods
+- **LAWgrid.DataPopulation.cs** - Array and test data population methods
+- **LAWgrid.ExcelMethods.cs** - Excel export methods with formatting
+- **LAWgrid.EventHandlers.cs** - Mouse, pointer, scroll, and context menu handlers
+- **LAWgrid.PublicMethods.cs** - Public utility methods for grid manipulation
+- **LAWgrid.PrivateMethods.cs** - Private helper methods
+- **LAWgrid.HelperClasses.cs** - Supporting classes and data models
 
 ## Dependencies
 
 - **Avalonia** (v11.2.2): Cross-platform UI framework
 - **Avalonia.Desktop** (v11.2.2): Desktop-specific Avalonia components
 - **Microsoft.Data.SqlClient** (v6.0.1): SQL Server data access
+- **Oracle.ManagedDataAccess.Core** (v23.7.0): Oracle database data access
+- **MySqlConnector** (v2.4.0): MySQL database data access (high-performance async driver)
+- **Net.IBM.Data.Db2** (v9.0.0.400): IBM DB2 database data access
+- **ClosedXML** (v0.104.2): Excel file generation (MIT License - fully free!)
 - **SkiaSharp** (v2.88.9): Image encoding for JPEG/BMP export
 - **Target Framework**: .NET 9.0
 
 ## Usage Examples
 
-### Data Population
+### Database Population
 
+#### SQL Server
 ```csharp
-// Basic SQL query population
-string connectionString = "Server=myserver.database.windows.net;Database=MyDB;User Id=username;Password=password";
-string query = "SELECT * FROM MyTable";
+// Async with detailed result information
+string connectionString = "Server=myserver;Database=MyDB;User Id=username;Password=password;";
+string query = "SELECT * FROM Customers";
+var result = await TheGridInTest.PopulateFromSqlQueryAsync(connectionString, query);
+
+if (result.Success)
+{
+    Console.WriteLine($"Loaded {result.RowCount} rows");
+}
+else
+{
+    Console.WriteLine($"Error: {result.ErrorMessage}");
+}
+
+// Synchronous version
 TheGridInTest.PopulateFromSqlQuerySync(connectionString, query);
+
+// Simple async (returns bool)
+await TheGridInTest.PopulateFromSqlQuery(connectionString, query);
 ```
 
+#### Oracle
+```csharp
+// Async with detailed result information
+string connectionString = "Data Source=myserver:1521/ORCL;User Id=username;Password=password;";
+string query = "SELECT * FROM EMPLOYEES";
+var result = await TheGridInTest.PopulateFromOracleQueryAsync(connectionString, query);
+
+if (result.Success)
+{
+    Console.WriteLine($"Loaded {result.RowCount} rows");
+}
+
+// Synchronous version
+TheGridInTest.PopulateFromOracleQuerySync(connectionString, query);
+
+// Simple async (returns bool)
+await TheGridInTest.PopulateFromOracleQuery(connectionString, query);
+```
+
+#### MySQL
+```csharp
+// Async with detailed result information
+string connectionString = "Server=myserver;Database=mydb;User=root;Password=password;";
+string query = "SELECT * FROM customers";
+var result = await TheGridInTest.PopulateFromMySqlQueryAsync(connectionString, query);
+
+if (result.Success)
+{
+    Console.WriteLine($"Loaded {result.RowCount} rows");
+}
+
+// Synchronous version
+TheGridInTest.PopulateFromMySqlQuerySync(connectionString, query);
+
+// Simple async (returns bool)
+await TheGridInTest.PopulateFromMySqlQuery(connectionString, query);
+```
+
+#### DB2
+```csharp
+// Async with detailed result information
+string connectionString = "Server=myserver:50000;Database=SAMPLE;UID=db2admin;PWD=password;";
+string query = "SELECT * FROM EMPLOYEE";
+var result = await TheGridInTest.PopulateFromDb2QueryAsync(connectionString, query);
+
+if (result.Success)
+{
+    Console.WriteLine($"Loaded {result.RowCount} rows");
+}
+
+// Synchronous version
+TheGridInTest.PopulateFromDb2QuerySync(connectionString, query);
+
+// Simple async (returns bool)
+await TheGridInTest.PopulateFromDb2Query(connectionString, query);
+```
+
+#### DataTable
 ```csharp
 // Populate from DataTable
 DataTable dt = new DataTable();
@@ -118,10 +216,37 @@ dt.Rows.Add(2, "Jane Smith");
 TheGridInTest.PopulateFromDataTable(dt);
 ```
 
+#### Test Data
 ```csharp
 // Populate with test data
 TheGridInTest.TestPopulate();
 ```
+
+### Excel Export
+
+```csharp
+// Export with save file dialog (recommended)
+// Default filename: EXCELExport_MM-DD-YYYY.xlsx
+string? filePath = await TheGridInTest.ExportToExcelWithDialog();
+
+if (filePath != null)
+{
+    Console.WriteLine($"Excel file saved to: {filePath}");
+}
+
+// Export to specific file path
+bool success = TheGridInTest.ExportToExcel("/path/to/output.xlsx");
+```
+
+The Excel export includes:
+- Title row with merged cells and title formatting
+- Column headers with bold text and header colors
+- Data rows with proper formatting
+- Background colors (supports GreenBar mode)
+- Text colors
+- Font sizes matching the grid
+- Auto-fitted columns
+- Cell borders
 
 ### Visual Customization
 
@@ -176,7 +301,9 @@ await TheGridInTest.CopyGridToClipboardAsync();
 - `GridCellHighlightBrush`: Highlighted cell color (default: LightBlue)
 - `GridSelectedItemBrush`: Selected item color (default: AliceBlue)
 - `GridTitleBackground`: Title area background (default: Blue)
+- `GridTitleBrush`: Title text color (default: White)
 - `GridHeaderBackground`: Header area background (default: Cyan)
+- `GridHeaderBrush`: Header text color (default: Black)
 - `GreenBarMode`: Enable alternating row colors (default: false)
 - `GreenBarColor1`: First alternating row color (default: White)
 - `GreenBarColor2`: Second alternating row color (default: PaleGreen)
@@ -191,19 +318,72 @@ await TheGridInTest.CopyGridToClipboardAsync();
 Right-click on the grid to access:
 - **Fonts Larger**: Increase font sizes
 - **Fonts Smaller**: Decrease font sizes
+- **Export to Excel**: Export grid data to XLSX format with formatting
 
-- **Alt MouseWheel will also increase and decrease displayed font sizes
+**Alt + MouseWheel** will also increase and decrease displayed font sizes
 
 ## API Reference
 
-### Data Population Methods
+### Database Population Methods
 
-#### `PopulateFromDataTable(DataTable dataTable)`
-Populates the grid from a .NET DataTable object.
+All database population methods come in three variants:
+1. **Simple Async** (`PopulateFrom[Database]Query`) - Returns `Task<bool>`
+2. **Synchronous** (`PopulateFrom[Database]QuerySync`) - Returns `bool`
+3. **Detailed Async** (`PopulateFrom[Database]QueryAsync`) - Returns `Task<[Database]QueryResult>` with success status, row count, and error messages
+
+#### SQL Server Methods
+- `PopulateFromSqlQuery(string connectionString, string sqlQuery)` → `Task<bool>`
+- `PopulateFromSqlQuerySync(string connectionString, string sqlQuery)` → `bool`
+- `PopulateFromSqlQueryAsync(string connectionString, string sqlQuery)` → `Task<SqlQueryResult>`
+
+#### Oracle Methods
+- `PopulateFromOracleQuery(string connectionString, string oracleQuery)` → `Task<bool>`
+- `PopulateFromOracleQuerySync(string connectionString, string oracleQuery)` → `bool`
+- `PopulateFromOracleQueryAsync(string connectionString, string oracleQuery)` → `Task<OracleQueryResult>`
+
+#### MySQL Methods
+- `PopulateFromMySqlQuery(string connectionString, string mySqlQuery)` → `Task<bool>`
+- `PopulateFromMySqlQuerySync(string connectionString, string mySqlQuery)` → `bool`
+- `PopulateFromMySqlQueryAsync(string connectionString, string mySqlQuery)` → `Task<MySqlQueryResult>`
+
+#### DB2 Methods
+- `PopulateFromDb2Query(string connectionString, string db2Query)` → `Task<bool>`
+- `PopulateFromDb2QuerySync(string connectionString, string db2Query)` → `bool`
+- `PopulateFromDb2QueryAsync(string connectionString, string db2Query)` → `Task<Db2QueryResult>`
+
+#### DataTable Method
+- `PopulateFromDataTable(DataTable dataTable)` → `bool`
+
+### Excel Export Methods
+
+#### `ExportToExcelWithDialog()`
+Shows a save file dialog and exports the grid to an Excel file.
+- **Returns**: `Task<string?>` - The full path to the saved file, or null if cancelled/failed
+- **Default Filename**: `EXCELExport_MM-DD-YYYY.xlsx`
+- **Features**:
+  - Preserves all colors (title, headers, cells, GreenBar)
+  - Maintains font sizes and styles
+  - Auto-fits columns
+  - Adds cell borders
+  - Worksheet named "EXCELEXPORT"
+- **Example**:
+```csharp
+string? path = await TheGridInTest.ExportToExcelWithDialog();
+if (path != null)
+{
+    Console.WriteLine($"Exported to: {path}");
+}
+```
+
+#### `ExportToExcel(string filePath)`
+Exports the grid to an Excel file at the specified path.
 - **Parameters**:
-  - `dataTable`: The DataTable containing the data to display
+  - `filePath`: Full path where the Excel file should be saved
 - **Returns**: `bool` - True if successful, false otherwise
-- **Example**: See Usage Examples section above
+- **Example**:
+```csharp
+bool success = TheGridInTest.ExportToExcel("/home/user/Documents/report.xlsx");
+```
 
 ### Visual Customization Methods
 
@@ -257,6 +437,17 @@ As an Avalonia-based control, LAWgrid supports:
 - Windows
 - Linux
 - macOS
+
+## Database Support
+
+LAWgrid provides native support for the following database systems:
+- **SQL Server** - Microsoft's enterprise database
+- **Oracle** - Oracle Database (all editions)
+- **MySQL** - Popular open-source database (via high-performance MySqlConnector)
+- **DB2** - IBM's enterprise database
+- **Any ADO.NET Source** - via DataTable support
+
+All database methods handle connection management, error handling, and provide both synchronous and asynchronous variants for maximum flexibility.
 
 ## License
 
