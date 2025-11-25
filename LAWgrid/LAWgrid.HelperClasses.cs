@@ -912,3 +912,33 @@ namespace LAWgrid;
         public string ErrorMessage { get; set; }
         public int RowCount { get; set; }
     }
+
+    /// <summary>
+    /// Result object for Oracle query operations
+    /// </summary>
+    public class OracleQueryResult
+    {
+        public bool Success { get; set; }
+        public string ErrorMessage { get; set; }
+        public int RowCount { get; set; }
+    }
+
+    /// <summary>
+    /// Result object for MySQL query operations
+    /// </summary>
+    public class MySqlQueryResult
+    {
+        public bool Success { get; set; }
+        public string ErrorMessage { get; set; }
+        public int RowCount { get; set; }
+    }
+
+    /// <summary>
+    /// Result object for DB2 query operations
+    /// </summary>
+    public class Db2QueryResult
+    {
+        public bool Success { get; set; }
+        public string ErrorMessage { get; set; }
+        public int RowCount { get; set; }
+    }
