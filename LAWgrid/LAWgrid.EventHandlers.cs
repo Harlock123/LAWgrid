@@ -416,5 +416,41 @@ public partial class LAWgrid
 
     }
 
+    private async void ExportToExcel_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("ExportToExcel_Click: Starting export...");
+
+            // Export the grid to Excel with a file dialog
+            var filePath = await ExportToExcelWithDialog();
+
+            if (filePath != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"Excel file saved to: {filePath}");
+
+                // Verify file was created
+                if (System.IO.File.Exists(filePath))
+                {
+                    var fileInfo = new System.IO.FileInfo(filePath);
+                    System.Diagnostics.Debug.WriteLine($"File verified. Size: {fileInfo.Length} bytes");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("WARNING: File path returned but file does not exist!");
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Excel export cancelled or failed");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error in ExportToExcel_Click: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+        }
+    }
+
     #endregion
 }
