@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Avalonia.Platform.Storage;
 using ClosedXML.Excel;
 
@@ -124,11 +125,11 @@ public partial class LAWgrid
                     {
                         // Alternate row colors
                         var bgBrush = (dataRowIndex % 2 == 0) ? _greenBarColor1 : _greenBarColor2;
-                        ApplyBrushToClosedXMLCell(cell.AsRange(), bgBrush, Brushes.Black);
+                        ApplyBrushToClosedXMLCell(cell.AsRange(), bgBrush, _gridCellContentBrush);
                     }
                     else
                     {
-                        ApplyBrushToClosedXMLCell(cell.AsRange(), _gridCellBrush, Brushes.Black);
+                        ApplyBrushToClosedXMLCell(cell.AsRange(), _gridCellBrush, _gridCellContentBrush);
                     }
 
                     // Add border
@@ -217,25 +218,59 @@ public partial class LAWgrid
     {
         try
         {
+            // Debug: Log brush types
+            System.Diagnostics.Debug.WriteLine($"Applying colors - BG Brush Type: {backgroundBrush?.GetType().Name ?? "null"}, Text Brush Type: {textBrush?.GetType().Name ?? "null"}");
+
             // Apply background color
             if (backgroundBrush is SolidColorBrush bgSolidBrush)
             {
                 var bgColor = bgSolidBrush.Color;
-                var xlColor = XLColor.FromArgb(bgColor.A, bgColor.R, bgColor.G, bgColor.B);
+                System.Diagnostics.Debug.WriteLine($"Background Color: A={bgColor.A}, R={bgColor.R}, G={bgColor.G}, B={bgColor.B}");
+
+                var xlColor = XLColor.FromArgb(bgColor.R, bgColor.G, bgColor.B);
+                cell.Style.Fill.PatternType = ClosedXML.Excel.XLFillPatternValues.Solid;
                 cell.Style.Fill.BackgroundColor = xlColor;
+            }
+            else if (backgroundBrush is ImmutableSolidColorBrush immutableBgBrush)
+            {
+                var bgColor = immutableBgBrush.Color;
+                System.Diagnostics.Debug.WriteLine($"Immutable Background Color: A={bgColor.A}, R={bgColor.R}, G={bgColor.G}, B={bgColor.B}");
+
+                var xlColor = XLColor.FromArgb(bgColor.R, bgColor.G, bgColor.B);
+                cell.Style.Fill.PatternType = ClosedXML.Excel.XLFillPatternValues.Solid;
+                cell.Style.Fill.BackgroundColor = xlColor;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"Background brush not a SolidColorBrush: {backgroundBrush?.GetType().Name ?? "null"}");
             }
 
             // Apply text color
             if (textBrush is SolidColorBrush textSolidBrush)
             {
                 var textColor = textSolidBrush.Color;
-                var xlTextColor = XLColor.FromArgb(textColor.A, textColor.R, textColor.G, textColor.B);
+                System.Diagnostics.Debug.WriteLine($"Text Color: A={textColor.A}, R={textColor.R}, G={textColor.G}, B={textColor.B}");
+
+                var xlTextColor = XLColor.FromArgb(textColor.R, textColor.G, textColor.B);
                 cell.Style.Font.FontColor = xlTextColor;
+            }
+            else if (textBrush is ImmutableSolidColorBrush immutableTextBrush)
+            {
+                var textColor = immutableTextBrush.Color;
+                System.Diagnostics.Debug.WriteLine($"Immutable Text Color: A={textColor.A}, R={textColor.R}, G={textColor.G}, B={textColor.B}");
+
+                var xlTextColor = XLColor.FromArgb(textColor.R, textColor.G, textColor.B);
+                cell.Style.Font.FontColor = xlTextColor;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"Text brush not a SolidColorBrush: {textBrush?.GetType().Name ?? "null"}");
             }
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Error applying brush to cell: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
         }
     }
 
