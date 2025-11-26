@@ -942,3 +942,13 @@ namespace LAWgrid;
         public string ErrorMessage { get; set; }
         public int RowCount { get; set; }
     }
+
+    /// <summary>
+    /// Result object for PostgreSQL query operations
+    /// </summary>
+    public class PostgresQueryResult
+    {
+        public bool Success { get; set; }
+        public string ErrorMessage { get; set; }
+        public int RowCount { get; set; }
+    }

@@ -4,7 +4,7 @@ A custom data grid control built for Avalonia UI - a cross-platform .NET UI fram
 
 ## Overview
 
-LAWgrid is a highly customizable user control that displays tabular data in a grid format with extensive customization options and direct integration with multiple database systems including SQL Server, Oracle, MySQL, and DB2.
+LAWgrid is a highly customizable user control that displays tabular data in a grid format with extensive customization options and direct integration with multiple database systems including SQL Server, Oracle, MySQL, PostgreSQL, and DB2.
 
 ## Features
 
@@ -12,6 +12,7 @@ LAWgrid is a highly customizable user control that displays tabular data in a gr
 - **SQL Server Integration**: Direct population from SQL Server queries
 - **Oracle Integration**: Direct population from Oracle database queries
 - **MySQL Integration**: Direct population from MySQL database queries
+- **PostgreSQL Integration**: Direct population from PostgreSQL database queries
 - **DB2 Integration**: Direct population from IBM DB2 database queries
 - **DataTable Support**: Populate from .NET DataTable objects
 - **Test Data Support**: Built-in test data population for development and testing
@@ -73,6 +74,7 @@ LAWgrid/
 │   ├── LAWgrid.SqlMethods.cs       # Partial class - SQL Server population methods
 │   ├── LAWgrid.OracleMethods.cs    # Partial class - Oracle population methods
 │   ├── LAWgrid.MySqlMethods.cs     # Partial class - MySQL population methods
+│   ├── LAWgrid.PostgresMethods.cs  # Partial class - PostgreSQL population methods
 │   ├── LAWgrid.Db2Methods.cs       # Partial class - DB2 population methods
 │   ├── LAWgrid.DataPopulation.cs   # Partial class - Data population methods
 │   ├── LAWgrid.ExcelMethods.cs     # Partial class - Excel export methods
@@ -101,6 +103,7 @@ The LAWgrid control is organized into multiple partial class files for better ma
 - **LAWgrid.SqlMethods.cs** - SQL Server query population methods
 - **LAWgrid.OracleMethods.cs** - Oracle database query population methods
 - **LAWgrid.MySqlMethods.cs** - MySQL database query population methods
+- **LAWgrid.PostgresMethods.cs** - PostgreSQL database query population methods
 - **LAWgrid.Db2Methods.cs** - DB2 database query population methods
 - **LAWgrid.DataPopulation.cs** - Array and test data population methods
 - **LAWgrid.ExcelMethods.cs** - Excel export methods with formatting
@@ -116,6 +119,7 @@ The LAWgrid control is organized into multiple partial class files for better ma
 - **Microsoft.Data.SqlClient** (v6.0.1): SQL Server data access
 - **Oracle.ManagedDataAccess.Core** (v23.7.0): Oracle database data access
 - **MySqlConnector** (v2.4.0): MySQL database data access (high-performance async driver)
+- **Npgsql** (v9.0.2): PostgreSQL database data access (official .NET driver)
 - **Net.IBM.Data.Db2** (v9.0.0.400): IBM DB2 database data access
 - **ClosedXML** (v0.104.2): Excel file generation (MIT License - fully free!)
 - **SkiaSharp** (v2.88.9): Image encoding for JPEG/BMP export
@@ -184,6 +188,25 @@ TheGridInTest.PopulateFromMySqlQuerySync(connectionString, query);
 
 // Simple async (returns bool)
 await TheGridInTest.PopulateFromMySqlQuery(connectionString, query);
+```
+
+#### PostgreSQL
+```csharp
+// Async with detailed result information
+string connectionString = "Host=myserver;Database=mydb;Username=postgres;Password=password;";
+string query = "SELECT * FROM customers";
+var result = await TheGridInTest.PopulateFromPostgresQueryAsync(connectionString, query);
+
+if (result.Success)
+{
+    Console.WriteLine($"Loaded {result.RowCount} rows");
+}
+
+// Synchronous version
+TheGridInTest.PopulateFromPostgresQuerySync(connectionString, query);
+
+// Simple async (returns bool)
+await TheGridInTest.PopulateFromPostgresQuery(connectionString, query);
 ```
 
 #### DB2
@@ -346,6 +369,11 @@ All database population methods come in three variants:
 - `PopulateFromMySqlQuerySync(string connectionString, string mySqlQuery)` → `bool`
 - `PopulateFromMySqlQueryAsync(string connectionString, string mySqlQuery)` → `Task<MySqlQueryResult>`
 
+#### PostgreSQL Methods
+- `PopulateFromPostgresQuery(string connectionString, string postgresQuery)` → `Task<bool>`
+- `PopulateFromPostgresQuerySync(string connectionString, string postgresQuery)` → `bool`
+- `PopulateFromPostgresQueryAsync(string connectionString, string postgresQuery)` → `Task<PostgresQueryResult>`
+
 #### DB2 Methods
 - `PopulateFromDb2Query(string connectionString, string db2Query)` → `Task<bool>`
 - `PopulateFromDb2QuerySync(string connectionString, string db2Query)` → `bool`
@@ -444,6 +472,7 @@ LAWgrid provides native support for the following database systems:
 - **SQL Server** - Microsoft's enterprise database
 - **Oracle** - Oracle Database (all editions)
 - **MySQL** - Popular open-source database (via high-performance MySqlConnector)
+- **PostgreSQL** - Advanced open-source database (via official Npgsql driver)
 - **DB2** - IBM's enterprise database
 - **Any ADO.NET Source** - via DataTable support
 
