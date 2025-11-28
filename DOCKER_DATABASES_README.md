@@ -11,6 +11,7 @@ This repository includes Docker Compose configurations for four different databa
 | **Oracle XE 21c** | `docker-compose.yml` (root) | 1521 | ✅ Ready |
 | **PostgreSQL 16** | `docker-postgres/` | 5432 | ✅ Ready |
 | **MySQL 8.0** | `docker-mysql/` | 3306 | ✅ Ready |
+| **MongoDB 7.0** | `docker-mongo/` | 27017 | ✅ Ready (NoSQL) |
 | **DB2 11.5** | `docker-db2/` | 50000 | ✅ Ready |
 
 ## Quick Start Guide
@@ -28,6 +29,9 @@ cd docker-postgres && docker-compose up -d && cd ..
 
 # Start MySQL
 cd docker-mysql && docker-compose up -d && cd ..
+
+# Start MongoDB
+cd docker-mongo && docker-compose up -d && cd ..
 
 # Start DB2
 cd docker-db2 && docker-compose up -d && cd ..
@@ -61,6 +65,15 @@ docker-compose up -d
 docker-compose ps  # Wait for "healthy" status
 ```
 📖 [Full MySQL Documentation](docker-mysql/MYSQL_SETUP.md)
+
+#### MongoDB
+```bash
+cd docker-mongo
+docker-compose up -d
+docker-compose ps  # Wait for "healthy" status
+```
+📖 [Full MongoDB Documentation](docker-mongo/MONGODB_SETUP.md)
+🌟 **Special Feature:** Dynamic schema handling for NoSQL documents!
 
 #### DB2
 ```bash
@@ -111,6 +124,18 @@ Password: TestPassword123
 
 Connection String:
 Server=localhost;Port=3306;Database=lawgrid_test;Uid=testuser;Pwd=TestPassword123;
+```
+
+### MongoDB
+```
+Host: localhost
+Port: 27017
+Database: lawgrid_test
+Username: testuser
+Password: TestPassword123
+
+Connection String:
+mongodb://testuser:TestPassword123@localhost:27017/lawgrid_test
 ```
 
 ### DB2
@@ -170,6 +195,15 @@ string query = "SELECT * FROM employees ORDER BY employee_id";
 var result = await grid.PopulateFromMySqlQueryAsync(connectionString, query);
 ```
 
+### MongoDB Example (with Dynamic Schema Handling)
+```csharp
+var grid = new LAWgrid();
+string connectionString = "mongodb://testuser:TestPassword123@localhost:27017/lawgrid_test";
+// Note: MongoDB uses collection name and filter instead of SQL query
+var result = await grid.PopulateFromMongoQueryAsync(connectionString, "lawgrid_test", "employees", "{}");
+// Get all employees - grid automatically handles varying schemas!
+```
+
 ### DB2 Example
 ```csharp
 var grid = new LAWgrid();
@@ -185,9 +219,10 @@ var result = await grid.PopulateFromDb2QueryAsync(connectionString, query);
 | Oracle | 2GB | 2.5GB | 2-3 min | First startup slow |
 | PostgreSQL | 512MB | 80MB | 10-15 sec | Fastest to start |
 | MySQL | 1GB | 500MB | 30-45 sec | Good balance |
+| MongoDB | 512MB | 600MB | 15-20 sec | NoSQL, dynamic schemas |
 | DB2 | 4GB | 5GB | 3-5 min | Most resource-intensive |
 
-**Recommended for running all simultaneously:** 8GB RAM, 10GB disk space
+**Recommended for running all simultaneously:** 9GB RAM, 11GB disk space
 
 ## Common Operations
 
@@ -207,6 +242,9 @@ cd docker-postgres && docker-compose stop && cd ..
 # Stop MySQL
 cd docker-mysql && docker-compose stop && cd ..
 
+# Stop MongoDB
+cd docker-mongo && docker-compose stop && cd ..
+
 # Stop DB2
 cd docker-db2 && docker-compose stop && cd ..
 ```
@@ -216,6 +254,7 @@ cd docker-db2 && docker-compose stop && cd ..
 docker-compose down
 cd docker-postgres && docker-compose down && cd ..
 cd docker-mysql && docker-compose down && cd ..
+cd docker-mongo && docker-compose down && cd ..
 cd docker-db2 && docker-compose down && cd ..
 ```
 
@@ -224,6 +263,7 @@ cd docker-db2 && docker-compose down && cd ..
 docker-compose down -v
 cd docker-postgres && docker-compose down -v && cd ..
 cd docker-mysql && docker-compose down -v && cd ..
+cd docker-mongo && docker-compose down -v && cd ..
 cd docker-db2 && docker-compose down -v && cd ..
 ```
 
@@ -237,6 +277,9 @@ cd docker-postgres && docker-compose logs postgres
 
 # MySQL
 cd docker-mysql && docker-compose logs mysql
+
+# MongoDB
+cd docker-mongo && docker-compose logs mongodb
 
 # DB2
 cd docker-db2 && docker-compose logs db2
@@ -270,6 +313,13 @@ cd docker-db2 && docker-compose logs db2
 - Good balance of features and performance
 - UTF8MB4 encoding for full Unicode support
 - Compatible with MariaDB clients
+
+### MongoDB
+- NoSQL document database
+- **Dynamic schema handling** - documents can have different fields
+- LAWgrid automatically merges all fields from all documents
+- Perfect for flexible, evolving data structures
+- Excellent for nested documents and arrays
 
 ### DB2
 - Enterprise-grade database

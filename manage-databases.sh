@@ -53,6 +53,10 @@ start_all() {
     print_status "Starting MySQL..."
     (cd docker-mysql && docker-compose up -d)
 
+    # Start MongoDB
+    print_status "Starting MongoDB..."
+    (cd docker-mongo && docker-compose up -d)
+
     # Start DB2
     print_status "Starting DB2..."
     (cd docker-db2 && docker-compose up -d)
@@ -70,6 +74,7 @@ stop_all() {
     docker-compose stop
     (cd docker-postgres && docker-compose stop)
     (cd docker-mysql && docker-compose stop)
+    (cd docker-mongo && docker-compose stop)
     (cd docker-db2 && docker-compose stop)
 
     print_success "All databases stopped!"
@@ -96,6 +101,7 @@ down_all() {
     docker-compose down
     (cd docker-postgres && docker-compose down)
     (cd docker-mysql && docker-compose down)
+    (cd docker-mongo && docker-compose down)
     (cd docker-db2 && docker-compose down)
 
     print_success "All database containers removed (data preserved)"
@@ -116,6 +122,7 @@ clean_all() {
     docker-compose down -v
     (cd docker-postgres && docker-compose down -v)
     (cd docker-mysql && docker-compose down -v)
+    (cd docker-mongo && docker-compose down -v)
     (cd docker-db2 && docker-compose down -v)
 
     print_success "All databases and data removed!"
@@ -134,12 +141,15 @@ logs() {
         mysql)
             (cd docker-mysql && docker-compose logs -f mysql)
             ;;
+        mongo|mongodb)
+            (cd docker-mongo && docker-compose logs -f mongodb)
+            ;;
         db2)
             (cd docker-db2 && docker-compose logs -f db2)
             ;;
         *)
             print_error "Unknown database: $db"
-            print_status "Available: oracle, postgres, mysql, db2"
+            print_status "Available: oracle, postgres, mysql, mongo, db2"
             exit 1
             ;;
     esac
@@ -174,6 +184,10 @@ start_db() {
             print_status "Starting MySQL..."
             (cd docker-mysql && docker-compose up -d)
             ;;
+        mongo|mongodb)
+            print_status "Starting MongoDB..."
+            (cd docker-mongo && docker-compose up -d)
+            ;;
         db2)
             print_status "Starting DB2..."
             (cd docker-db2 && docker-compose up -d)
@@ -181,7 +195,7 @@ start_db() {
             ;;
         *)
             print_error "Unknown database: $db"
-            print_status "Available: oracle, postgres, mysql, db2"
+            print_status "Available: oracle, postgres, mysql, mongo, db2"
             exit 1
             ;;
     esac
@@ -201,12 +215,15 @@ stop_db() {
         mysql)
             (cd docker-mysql && docker-compose stop)
             ;;
+        mongo|mongodb)
+            (cd docker-mongo && docker-compose stop)
+            ;;
         db2)
             (cd docker-db2 && docker-compose stop)
             ;;
         *)
             print_error "Unknown database: $db"
-            print_status "Available: oracle, postgres, mysql, db2"
+            print_status "Available: oracle, postgres, mysql, mongo, db2"
             exit 1
             ;;
     esac
@@ -221,14 +238,14 @@ LAWgrid Database Management Script
 Usage: $0 <command> [options]
 
 Commands:
-  start-all              Start all databases (Oracle, PostgreSQL, MySQL, DB2)
+  start-all              Start all databases (Oracle, PostgreSQL, MySQL, MongoDB, DB2)
   stop-all               Stop all databases
   restart-all            Restart all databases
   status                 Show status of all databases
   down-all               Remove all containers (keep data)
   clean-all              Remove all containers and data (WARNING: deletes data!)
 
-  start <db>             Start specific database (oracle, postgres, mysql, db2)
+  start <db>             Start specific database (oracle, postgres, mysql, mongo, db2)
   stop <db>              Stop specific database
   logs <db>              View logs for specific database
 
@@ -238,6 +255,7 @@ Examples:
   $0 start-all           # Start all databases
   $0 status              # Check status
   $0 start postgres      # Start only PostgreSQL
+  $0 start mongo         # Start only MongoDB
   $0 logs mysql          # View MySQL logs
   $0 init-db2            # Initialize DB2 after first start
   $0 stop-all            # Stop all databases

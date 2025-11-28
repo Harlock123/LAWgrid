@@ -952,3 +952,11 @@ namespace LAWgrid;
         public string ErrorMessage { get; set; }
         public int RowCount { get; set; }
     }
+
+    public class MongoQueryResult
+    {
+        public bool Success { get; set; }
+        public string ErrorMessage { get; set; }
+        public int DocumentCount { get; set; }
+        public int TotalFieldCount { get; set; }
+    }
