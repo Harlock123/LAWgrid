@@ -4,7 +4,7 @@ A custom data grid control built for Avalonia UI - a cross-platform .NET UI fram
 
 ## Overview
 
-LAWgrid is a highly customizable user control that displays tabular data in a grid format with extensive customization options and direct integration with multiple database systems including SQL Server, Oracle, MySQL, PostgreSQL, and DB2.
+LAWgrid is a highly customizable user control that displays tabular data in a grid format with extensive customization options and direct integration with multiple database systems including SQL Server, Oracle, MySQL, PostgreSQL, MongoDB (NoSQL), and DB2.
 
 ## Features
 
@@ -13,6 +13,10 @@ LAWgrid is a highly customizable user control that displays tabular data in a gr
 - **Oracle Integration**: Direct population from Oracle database queries
 - **MySQL Integration**: Direct population from MySQL database queries
 - **PostgreSQL Integration**: Direct population from PostgreSQL database queries
+- **MongoDB Integration**: Direct population from MongoDB (NoSQL) with **dynamic schema handling**
+  - Automatically detects all fields across documents with different schemas
+  - Creates unified grid with all fields as columns
+  - Fills empty cells for missing fields in documents
 - **DB2 Integration**: Direct population from IBM DB2 database queries
 - **DataTable Support**: Populate from .NET DataTable objects
 - **Test Data Support**: Built-in test data population for development and testing
@@ -75,6 +79,7 @@ LAWgrid/
 │   ├── LAWgrid.OracleMethods.cs    # Partial class - Oracle population methods
 │   ├── LAWgrid.MySqlMethods.cs     # Partial class - MySQL population methods
 │   ├── LAWgrid.PostgresMethods.cs  # Partial class - PostgreSQL population methods
+│   ├── LAWgrid.MongoMethods.cs     # Partial class - MongoDB (NoSQL) population methods
 │   ├── LAWgrid.Db2Methods.cs       # Partial class - DB2 population methods
 │   ├── LAWgrid.DataPopulation.cs   # Partial class - Data population methods
 │   ├── LAWgrid.ExcelMethods.cs     # Partial class - Excel export methods
@@ -104,6 +109,7 @@ The LAWgrid control is organized into multiple partial class files for better ma
 - **LAWgrid.OracleMethods.cs** - Oracle database query population methods
 - **LAWgrid.MySqlMethods.cs** - MySQL database query population methods
 - **LAWgrid.PostgresMethods.cs** - PostgreSQL database query population methods
+- **LAWgrid.MongoMethods.cs** - MongoDB (NoSQL) database query population methods with dynamic schema handling
 - **LAWgrid.Db2Methods.cs** - DB2 database query population methods
 - **LAWgrid.DataPopulation.cs** - Array and test data population methods
 - **LAWgrid.ExcelMethods.cs** - Excel export methods with formatting
@@ -120,6 +126,7 @@ The LAWgrid control is organized into multiple partial class files for better ma
 - **Oracle.ManagedDataAccess.Core** (v23.7.0): Oracle database data access
 - **MySqlConnector** (v2.4.0): MySQL database data access (high-performance async driver)
 - **Npgsql** (v9.0.2): PostgreSQL database data access (official .NET driver)
+- **MongoDB.Driver** (v3.0.0): MongoDB (NoSQL) database data access with dynamic schema support
 - **Net.IBM.Data.Db2** (v9.0.0.400): IBM DB2 database data access
 - **ClosedXML** (v0.104.2): Excel file generation (MIT License - fully free!)
 - **SkiaSharp** (v2.88.9): Image encoding for JPEG/BMP export
@@ -208,6 +215,49 @@ TheGridInTest.PopulateFromPostgresQuerySync(connectionString, query);
 // Simple async (returns bool)
 await TheGridInTest.PopulateFromPostgresQuery(connectionString, query);
 ```
+
+#### MongoDB (NoSQL)
+```csharp
+// MongoDB uses collection name and JSON filter instead of SQL query
+// Async with detailed result information
+string connectionString = "mongodb://username:password@myserver:27017/mydb";
+string databaseName = "mydb";
+string collectionName = "customers";
+string filter = "{}"; // Empty filter = all documents
+
+var result = await TheGridInTest.PopulateFromMongoQueryAsync(
+    connectionString,
+    databaseName,
+    collectionName,
+    filter
+);
+
+if (result.Success)
+{
+    Console.WriteLine($"Loaded {result.DocumentCount} documents");
+    Console.WriteLine($"Total unique fields: {result.TotalFieldCount}");
+    // MongoDB automatically handles documents with different schemas!
+}
+
+// Filter examples
+string itDeptFilter = "{\"department_id\": 60}";  // Specific department
+string highEarnersFilter = "{\"salary\": {\"$gt\": 50000}}";  // Salary > 50000
+string withSkillsFilter = "{\"skills\": {\"$exists\": true}}";  // Has skills field
+
+// Synchronous version
+TheGridInTest.PopulateFromMongoQuerySync(connectionString, databaseName, collectionName, filter);
+
+// Simple async (returns bool)
+await TheGridInTest.PopulateFromMongoQuery(connectionString, databaseName, collectionName, filter);
+```
+
+**MongoDB Dynamic Schema Handling:**
+Unlike SQL databases, MongoDB documents in the same collection can have different fields. LAWgrid automatically:
+- Collects all unique field names across all documents
+- Creates a unified grid with all fields as columns
+- Fills empty cells for documents missing certain fields
+
+This allows you to query collections with varied schemas and see all data in one grid!
 
 #### DB2
 ```csharp
@@ -374,6 +424,23 @@ All database population methods come in three variants:
 - `PopulateFromPostgresQuerySync(string connectionString, string postgresQuery)` → `bool`
 - `PopulateFromPostgresQueryAsync(string connectionString, string postgresQuery)` → `Task<PostgresQueryResult>`
 
+#### MongoDB Methods (NoSQL)
+- `PopulateFromMongoQuery(string connectionString, string databaseName, string collectionName, string filter)` → `Task<bool>`
+- `PopulateFromMongoQuerySync(string connectionString, string databaseName, string collectionName, string filter)` → `bool`
+- `PopulateFromMongoQueryAsync(string connectionString, string databaseName, string collectionName, string filter)` → `Task<MongoQueryResult>`
+
+**Note:** MongoDB methods use a different signature with 4 parameters:
+- `connectionString`: MongoDB connection string
+- `databaseName`: Database name
+- `collectionName`: Collection name (like a table in SQL)
+- `filter`: JSON filter string (e.g., `"{}"` for all, `"{\"field\": \"value\"}"` for filtered)
+
+**MongoQueryResult** includes:
+- `Success`: Operation success status
+- `ErrorMessage`: Error details if failed
+- `DocumentCount`: Number of documents retrieved
+- `TotalFieldCount`: Total unique fields across all documents (for dynamic schema)
+
 #### DB2 Methods
 - `PopulateFromDb2Query(string connectionString, string db2Query)` → `Task<bool>`
 - `PopulateFromDb2QuerySync(string connectionString, string db2Query)` → `bool`
@@ -473,10 +540,25 @@ LAWgrid provides native support for the following database systems:
 - **Oracle** - Oracle Database (all editions)
 - **MySQL** - Popular open-source database (via high-performance MySqlConnector)
 - **PostgreSQL** - Advanced open-source database (via official Npgsql driver)
+- **MongoDB** - NoSQL document database with **dynamic schema handling**
+  - Automatically handles collections with varied document structures
+  - Detects all unique fields across documents
+  - Creates unified grid view for heterogeneous data
 - **DB2** - IBM's enterprise database
 - **Any ADO.NET Source** - via DataTable support
 
 All database methods handle connection management, error handling, and provide both synchronous and asynchronous variants for maximum flexibility.
+
+### Docker Test Environments
+
+Complete Docker environments with sample data are available for testing all database integrations:
+- Oracle XE 21c
+- PostgreSQL 16
+- MySQL 8.0
+- MongoDB 7.0 (with varied schema examples)
+- IBM DB2 11.5
+
+See `DOCKER_DATABASES_README.md` for setup instructions and test data.
 
 ## License
 
