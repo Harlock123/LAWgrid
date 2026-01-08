@@ -20,7 +20,7 @@
         <RepositoryType>git</RepositoryType>
 
         <!-- TODO: Update these URLs with your actual GitHub repository -->
-        <PackageProjectUrl>https://github.com/harlo/LAWgrid</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/harlock123/LAWgrid</PackageProjectUrl>
         <RepositoryUrl>https://github.com/harlo/LAWgrid</RepositoryUrl>
 
         <!-- Package Settings -->
