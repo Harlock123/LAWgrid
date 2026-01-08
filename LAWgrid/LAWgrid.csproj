@@ -4,6 +4,29 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
+        <!-- NuGet Package Metadata -->
+        <PackageId>LAWgrid</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>harlo</Authors>
+        <Company>harlo</Company>
+        <Product>LAWgrid</Product>
+        <Description>A highly customizable data grid control for Avalonia UI with built-in support for multiple databases including SQL Server, Oracle, MySQL, PostgreSQL, MongoDB, and DB2. Features include Excel/image export, GreenBar mode, cell highlighting, mouse tracking with crosshairs, and dynamic schema handling for NoSQL databases.</Description>
+        <PackageTags>avalonia;datagrid;grid;control;ui;wpf;cross-platform;sql-server;oracle;mysql;postgresql;mongodb;db2;excel-export;dotnet</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>LAWGridIcon.png</PackageIcon>
+        <RepositoryType>git</RepositoryType>
+
+        <!-- TODO: Update these URLs with your actual GitHub repository -->
+        <PackageProjectUrl>https://github.com/harlo/LAWgrid</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/harlo/LAWgrid</RepositoryUrl>
+
+        <!-- Package Settings -->
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <PackageReleaseNotes>Initial release of LAWgrid - A customizable Avalonia data grid with multi-database support.</PackageReleaseNotes>
+        <Copyright>Copyright (c) 2025 harlo</Copyright>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +40,13 @@
       <PackageReference Include="Npgsql" Version="9.0.2" />
       <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.7.0" />
       <PackageReference Include="SkiaSharp" Version="2.88.9" />
+    </ItemGroup>
+
+    <!-- Include README, Icon, and License in the package -->
+    <ItemGroup>
+      <None Include="..\README.md" Pack="true" PackagePath="\" />
+      <None Include="..\LICENSE" Pack="true" PackagePath="\" />
+      <None Include="LAWGridIcon.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
