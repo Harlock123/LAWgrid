@@ -97,6 +97,10 @@ public partial class LAWgrid : UserControl
         set
         {
             _gridBackground = value;
+            if (TheCanvas != null)
+            {
+                TheCanvas.Background = _gridBackground;
+            }
             ReRender();
         }
     }

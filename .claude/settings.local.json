@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(dotnet pack:*)",
-      "Bash(dotnet nuget push:*)"
+      "Bash(dotnet nuget push:*)",
+      "Bash(dotnet build:*)"
     ]
   }
 }

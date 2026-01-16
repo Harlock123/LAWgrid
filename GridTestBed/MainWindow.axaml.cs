@@ -4,6 +4,7 @@ using System.Data;
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 
 namespace GridTestBed;
 
@@ -106,6 +107,10 @@ public partial class MainWindow : Window
         {
             Debug.WriteLine("PopulateFromDataTable failed");
         }
+        
+        TheGridInTest.GridBackground = Brushes.LightGray;
+        TheGridInTest.GridTitleBackground = Brushes.Magenta;
+        TheGridInTest.GridCellBrush = Brushes.White;
     }
 
     private void CmdTest3OnClick(object? sender, RoutedEventArgs e)

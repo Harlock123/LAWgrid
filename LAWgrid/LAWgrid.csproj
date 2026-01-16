@@ -7,7 +7,7 @@
 
         <!-- NuGet Package Metadata -->
         <PackageId>LAWgrid</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.0.2</Version>
         <Authors>harlo</Authors>
         <Company>harlo</Company>
         <Product>LAWgrid</Product>
@@ -19,13 +19,13 @@
         <PackageIcon>LAWGridIcon.png</PackageIcon>
         <RepositoryType>git</RepositoryType>
 
-        <!-- TODO: Update these URLs with your actual GitHub repository -->
         <PackageProjectUrl>https://github.com/harlock123/LAWgrid</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/harlo/LAWgrid</RepositoryUrl>
+        <RepositoryUrl>https://github.com/harlock123/LAWgrid</RepositoryUrl>
 
         <!-- Package Settings -->
-        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <PackageReleaseNotes>Initial release of LAWgrid - A customizable Avalonia data grid with multi-database support.</PackageReleaseNotes>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageReleaseNotes>v1.0.2 - Fixed some color setting tyhat were being ignored
+v1.0.1 - Fixed package metadata URLs.</PackageReleaseNotes>
         <Copyright>Copyright (c) 2025 harlo</Copyright>
     </PropertyGroup>
 

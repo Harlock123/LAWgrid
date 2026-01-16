@@ -124,7 +124,10 @@ public partial class LAWgrid : UserControl
             // _gridLeftOffset = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 0 : 5;
 
             _gridLeftOffset = 0;
-            
+
+            // Synchronize canvas background with the GridBackground property
+            TheCanvas.Background = _gridBackground;
+
             HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
 
             TheHorizontalScrollBar.Scroll += TheHorizontalScrollBar_scroll;
